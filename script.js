@@ -290,21 +290,15 @@ function renderJpeg() {
     `;
     grid.appendChild(notice);
 
-    const photos = jpeg.photos || [];
-    photos.forEach((photo, i) => {
-        const card = document.createElement('div');
-        card.className = 'photo-card';
-        card.style.animationDelay = `${Math.min(i * 0.03, 0.6)}s`;
-        card.innerHTML = `
-            <div class="photo-card__inner">
-                <img src="${photo}" alt="JPEG ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
-            </div>
-            <div class="photo-card__hover">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
+    const linkWrap = document.createElement('div');
+    linkWrap.style.cssText = 'text-align:center; padding:3rem 1rem;';
+    linkWrap.innerHTML = `
+        <a href="https://adobe.ly/4yyw3Lf" target="_blank" rel="noopener" class="btn btn--primary" style="font-size:1.1rem; padding:1rem 2.5rem; display:inline-flex; gap:0.6rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            View on Lightroom
+        </a>
+    `;
+    grid.appendChild(linkWrap);
 }
 
 function renderPerson(categoryId, personId) {

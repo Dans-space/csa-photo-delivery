@@ -83,14 +83,20 @@ def space_base(space):
 def list_assets(space, album):
     assets = []
     url = (f"{space_base(space)}/albums/{album}/assets"
-           f"?embed=asset&subtype=image&limit=100&api_key={API_KEY}")
+           f"?embed=asset&subtype=image;video&limit=100&api_key={API_KEY}")
     while url:
         data = fetch(url)
         assets.extend(data.get("resources", []))
         nxt = data.get("links", {}).get("next", {}).get("href")
-        url = (f"{API_BASE}/{nxt}" if nxt and not nxt.startswith("http")
-               else nxt) if nxt else None
-        if url and "api_key" not in url:
+        if not nxt:
+            break
+        if nxt.startswith("http"):
+            url = nxt
+        elif nxt.startswith("spaces/"):
+            url = f"{API_BASE}/{nxt}"
+        else:
+            url = f"{space_base(space)}/{nxt}"
+        if "api_key" not in url:
             url += ("&" if "?" in url else "?") + "api_key=" + API_KEY
     return assets
 
