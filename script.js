@@ -414,7 +414,7 @@ function runLoader() {
 
 // ── Countdown Gate ──
 
-const UNLOCK_TIME = new Date('2026-09-10T13:00:00-04:00').getTime();
+const UNLOCK_TIME = new Date('2026-09-09T13:00:00-04:00').getTime();
 
 function initCountdownGate() {
     const gate = $('#countdown-gate');
