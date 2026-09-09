@@ -1,68 +1,76 @@
-// ============================================
-// CONFIGURATION — Edit this section to update content
-// ============================================
 const CONFIG = {
-    studio: {
-        name: 'DanRec STUDIO',
-    },
+    studio: { name: "Dan's Studios" },
     shoot: {
-        title: 'CSA Professional Pictures',
-        date: '2025',
+        title: 'OLYMPUS',
+        subtitle: 'CSA Professional Shooting',
+        date: '2026',
         client: 'CSA',
     },
-    // Hero images — replace placeholder paths with real images
     heroImages: {
-        landing: '',      // e.g. 'assets/images/hero-landing.jpg'
-        portraits: '',    // e.g. 'assets/images/hero-portraits.jpg'
+        landing: 'assets/images/hero-landing.jpg',
+        portraits: 'assets/images/hero-portraits.JPG',
     },
     categories: [
         {
             id: 'portraits',
             name: 'Portraits',
+            locked: false,
             description: 'Individual portrait sessions',
+            heroImage: 'assets/images/hero-portraits.JPG',
             people: [
-                { id: 'jade',     name: 'Jade',     heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 25 },
-                { id: 'victoria', name: 'Victoria', heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 28 },
-                { id: 'jojo',     name: 'Jojo',     heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 25 },
-                { id: 'roham',    name: 'Roham',    heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 27 },
-                { id: 'raphaela', name: 'Raphaela', heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 26 },
-                { id: 'tuya',     name: 'Tuya',     heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 25 },
-                { id: 'susan',    name: 'Susan',    heroImage: '', albumUrl: '', downloadUrl: '', photoCount: 30 },
+                { id: 'jade',     name: 'Jade',     heroImage: 'assets/images/Jade hero.jpg',       albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'victoria', name: 'Victoria', heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'jojo',     name: 'Jojo',     heroImage: 'assets/images/Jojo hero.jpg',       albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'roham',    name: 'Roham',    heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'raphaela', name: 'Raphaela', heroImage: 'assets/images/Raphaela Hero.jpg',   albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'tuya',     name: 'Tuya',     heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'susan',    name: 'Susan',    heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'rejna',    name: 'Rejna',    heroImage: 'assets/images/Rejna hero.jpg',      albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
             ],
+        },
+        {
+            id: 'exposed',
+            name: 'Exposed',
+            locked: true,
+            teaser: 'Coming soon',
+            heroImage: '',
+            people: [],
+        },
+        {
+            id: 'the-statue',
+            name: 'The Statue',
+            locked: true,
+            teaser: 'Coming soon',
+            heroImage: 'assets/images/greek statu1 main.JPG',
+            people: [],
+        },
+        {
+            id: 'the-pool',
+            name: 'The Pool',
+            locked: true,
+            teaser: 'Coming soon',
+            heroImage: '',
+            people: [],
         },
     ],
 };
 
-// ============================================
-// STATE
-// ============================================
-const state = {
-    currentView: null,
-    transitioning: false,
-};
+const state = { currentView: null };
 
-// ============================================
-// HELPERS
-// ============================================
 const $ = (s, p) => (p || document).querySelector(s);
 const $$ = (s, p) => [...(p || document).querySelectorAll(s)];
 
 function getInitials(name) {
     return name.split(' ').map(w => w[0]).join('').toUpperCase();
 }
-
 function findCategory(id) {
     return CONFIG.categories.find(c => c.id === id);
 }
-
 function findPerson(categoryId, personId) {
     const cat = findCategory(categoryId);
     return cat ? cat.people.find(p => p.id === personId) : null;
 }
 
-// ============================================
-// ROUTER
-// ============================================
 function parseRoute() {
     const hash = location.hash.replace('#', '') || '/';
     const parts = hash.split('/').filter(Boolean);
@@ -76,85 +84,92 @@ function navigate(hash) {
     location.hash = hash;
 }
 
-// ============================================
-// VIEW TRANSITIONS
-// ============================================
 function switchView(viewId) {
-    if (state.transitioning) return;
     const current = $(`.view.active`);
     const next = $(`#view-${viewId}`);
-    if (!next || current === next) return;
+    if (!next) return;
+    if (current === next) return;
 
-    state.transitioning = true;
+    $$('.view').forEach(v => {
+        v.classList.remove('active', 'exiting');
+        if (v !== next) v.style.display = 'none';
+    });
 
-    if (current) {
-        current.classList.remove('active');
-        current.classList.add('exiting');
-        current.addEventListener('animationend', function handler() {
-            current.removeEventListener('animationend', handler);
-            current.classList.remove('exiting');
-            current.style.display = 'none';
-            showNext();
-        }, { once: true });
-    } else {
-        showNext();
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    next.style.display = 'block';
+    void next.offsetWidth;
+    next.classList.add('active');
+    state.currentView = viewId;
 
-    function showNext() {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        next.classList.add('active');
-        state.currentView = viewId;
-        state.transitioning = false;
+    setTimeout(() => {
         initRevealObserver();
         if (viewId === 'category') initTilt();
-    }
+    }, 50);
 }
 
-// ============================================
-// RENDERERS
-// ============================================
+// ── Renderers ──
+
 function renderLanding() {
     $('#shoot-title').textContent = CONFIG.shoot.title;
-    $('#shoot-info').textContent = `${CONFIG.studio.name}  ·  ${CONFIG.shoot.date}`;
+    $('#shoot-subtitle').textContent = CONFIG.shoot.subtitle;
+    $('#shoot-info').textContent = `${CONFIG.shoot.date}`;
 
     if (CONFIG.heroImages.landing) {
-        $('#landing-hero').style.backgroundImage = `url('${CONFIG.heroImages.landing}')`;
-        $('#landing-hero').style.backgroundSize = 'cover';
-        $('#landing-hero').style.backgroundPosition = 'center';
+        if (!$('#landing-hero .hero__bg-img')) {
+            const img = document.createElement('img');
+            img.src = CONFIG.heroImages.landing;
+            img.alt = CONFIG.shoot.title;
+            img.className = 'hero__bg-img';
+            $('#landing-hero').insertBefore(img, $('#landing-hero').firstChild);
+        }
     }
 
     const grid = $('#categories-container');
     grid.innerHTML = '';
 
-    CONFIG.categories.forEach(cat => {
-        const totalPhotos = cat.people.reduce((sum, p) => sum + p.photoCount, 0);
+    CONFIG.categories.forEach((cat, i) => {
         const card = document.createElement('div');
-        card.className = 'category-card reveal';
+        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '');
+        card.style.animationDelay = `${i * 0.1}s`;
+
+        const bgStyle = cat.heroImage
+            ? `background-image:url('${cat.heroImage}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(6px) brightness(0.4);' : ''}`
+            : '';
+
         card.innerHTML = `
-            <div class="category-card__bg"></div>
+            <div class="category-card__bg" style="${bgStyle}"></div>
             <div class="category-card__overlay"></div>
+            ${cat.locked ? '<div class="category-card__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>' : ''}
             <div class="category-card__info">
                 <div class="category-card__name">${cat.name}</div>
-                <div class="category-card__count">${cat.people.length} people · ${totalPhotos} photos</div>
+                <div class="category-card__count">${cat.locked ? cat.teaser : cat.people.length + ' people'}</div>
             </div>
         `;
-        card.addEventListener('click', () => navigate(`#${cat.id}`));
+
+        if (!cat.locked) {
+            card.addEventListener('click', () => navigate(`#${cat.id}`));
+        }
         grid.appendChild(card);
     });
 }
 
 function renderCategory(categoryId) {
     const cat = findCategory(categoryId);
-    if (!cat) { navigate('#/'); return; }
+    if (!cat || cat.locked) { navigate('#/'); return; }
 
-    $('#category-eyebrow').textContent = CONFIG.shoot.title;
+    $('#category-eyebrow').textContent = CONFIG.shoot.subtitle;
     $('#category-title').textContent = cat.name;
     $('#category-count').textContent = `${cat.people.length} people`;
 
-    if (CONFIG.heroImages[categoryId]) {
-        $('#category-hero').style.backgroundImage = `url('${CONFIG.heroImages[categoryId]}')`;
-        $('#category-hero').style.backgroundSize = 'cover';
-        $('#category-hero').style.backgroundPosition = 'center';
+    if (CONFIG.heroImages[categoryId] || cat.heroImage) {
+        const src = CONFIG.heroImages[categoryId] || cat.heroImage;
+        const existing = $('#category-hero .hero__bg-img');
+        if (existing) existing.remove();
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = cat.name;
+        img.className = 'hero__bg-img';
+        $('#category-hero').insertBefore(img, $('#category-hero').firstChild);
     }
 
     const grid = $('#people-container');
@@ -162,13 +177,13 @@ function renderCategory(categoryId) {
 
     cat.people.forEach((person, i) => {
         const card = document.createElement('div');
-        card.className = 'person-card reveal';
-        card.style.transitionDelay = `${i * 0.06}s`;
+        card.className = 'person-card';
+        card.style.animationDelay = `${i * 0.06}s`;
         card.dataset.personId = person.id;
 
         const hasImage = person.heroImage && person.heroImage.length > 0;
         const imageContent = hasImage
-            ? `<img src="${person.heroImage}" alt="${person.name}" style="width:100%;height:100%;object-fit:cover;">`
+            ? `<img src="${person.heroImage}" alt="${person.name}" loading="lazy">`
             : `<span class="person-card__initials">${getInitials(person.name)}</span>`;
 
         card.innerHTML = `
@@ -176,10 +191,6 @@ function renderCategory(categoryId) {
             <div class="person-card__overlay"></div>
             <div class="person-card__info">
                 <div class="person-card__name">${person.name}</div>
-                <div class="person-card__photos">${person.photoCount} photos</div>
-            </div>
-            <div class="person-card__arrow">
-                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
         `;
 
@@ -193,14 +204,17 @@ function renderPerson(categoryId, personId) {
     if (!person) { navigate(`#${categoryId}`); return; }
 
     $('#person-name').textContent = person.name;
-    $('#person-photo-count').textContent = `${person.photoCount} photos`;
+    $('#person-photo-count').textContent = '';
 
+    const banner = $('#person-banner');
+    const existing = banner.querySelector('.hero__bg-img');
+    if (existing) existing.remove();
     if (person.heroImage) {
-        $('#person-banner').style.backgroundImage = `url('${person.heroImage}')`;
-        $('#person-banner').style.backgroundSize = 'cover';
-        $('#person-banner').style.backgroundPosition = 'center';
-    } else {
-        $('#person-banner').style.backgroundImage = '';
+        const img = document.createElement('img');
+        img.src = person.heroImage;
+        img.alt = person.name;
+        img.className = 'hero__bg-img';
+        banner.insertBefore(img, banner.firstChild);
     }
 
     const dlBtn = $('#btn-download');
@@ -214,36 +228,29 @@ function renderPerson(categoryId, personId) {
 
     const grid = $('#photos-container');
     grid.innerHTML = '';
-
-    for (let i = 1; i <= person.photoCount; i++) {
+    const photos = person.photos || [];
+    photos.forEach((photo, i) => {
         const card = document.createElement('div');
-        card.className = 'photo-card reveal';
-        card.style.transitionDelay = `${Math.min(i * 0.03, 0.6)}s`;
+        card.className = 'photo-card';
+        card.style.animationDelay = `${Math.min(i * 0.03, 0.6)}s`;
         card.innerHTML = `
             <div class="photo-card__inner">
-                <span class="photo-card__number">${String(i).padStart(2, '0')}</span>
+                <img src="${photo}" alt="${person.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="photo-card__hover">
-                <svg viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    <line x1="11" y1="8" x2="11" y2="14"/>
-                    <line x1="8" y1="11" x2="14" y2="11"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
             </div>
         `;
-        card.addEventListener('click', () => openLightbox(i - 1, person.photoCount));
+        card.addEventListener('click', () => openLightbox(i, photos.length));
         grid.appendChild(card);
-    }
+    });
 }
 
-// ============================================
-// BREADCRUMB
-// ============================================
+// ── Breadcrumb ──
+
 function updateBreadcrumb(route) {
     const bc = $('#breadcrumb');
     bc.innerHTML = '';
-
     if (route.view === 'landing') return;
 
     const cat = findCategory(route.categoryId);
@@ -265,12 +272,10 @@ function updateBreadcrumb(route) {
     }
 }
 
-// ============================================
-// 3D TILT EFFECT
-// ============================================
+// ── 3D Tilt ──
+
 function initTilt() {
-    const cards = $$('.person-card');
-    cards.forEach(card => {
+    $$('.person-card').forEach(card => {
         let raf;
         card.addEventListener('mousemove', (e) => {
             if (raf) cancelAnimationFrame(raf);
@@ -285,7 +290,6 @@ function initTilt() {
                 card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.03)`;
             });
         });
-
         card.addEventListener('mouseleave', () => {
             if (raf) cancelAnimationFrame(raf);
             card.style.transition = 'transform 0.5s var(--ease-out), box-shadow 0.4s var(--ease-out)';
@@ -295,51 +299,41 @@ function initTilt() {
     });
 }
 
-// ============================================
-// LIGHTBOX
-// ============================================
+// ── Lightbox ──
+
 let lightboxIndex = 0;
 let lightboxTotal = 0;
+let lightboxPhotos = [];
 
 function openLightbox(index, total) {
     lightboxIndex = index;
     lightboxTotal = total;
+    const route = parseRoute();
+    const person = findPerson(route.categoryId, route.personId);
+    lightboxPhotos = person ? (person.photos || []) : [];
     updateLightboxContent();
     $('#lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox() {
     $('#lightbox').classList.remove('open');
     document.body.style.overflow = '';
 }
-
 function updateLightboxContent() {
     const img = $('#lightbox-img');
     img.alt = `Photo ${lightboxIndex + 1} of ${lightboxTotal}`;
-    // Placeholder — will show the actual photo when URLs are provided
-    img.src = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" fill="#1a1a1a"><rect width="800" height="600"/><text x="400" y="300" text-anchor="middle" fill="#333" font-family="sans-serif" font-size="24">${String(lightboxIndex + 1).padStart(2, '0')}</text></svg>`)}`;
+    img.src = lightboxPhotos[lightboxIndex] || '';
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxTotal}`;
 }
-
-function lightboxPrev() {
-    lightboxIndex = (lightboxIndex - 1 + lightboxTotal) % lightboxTotal;
-    updateLightboxContent();
-}
-
-function lightboxNext() {
-    lightboxIndex = (lightboxIndex + 1) % lightboxTotal;
-    updateLightboxContent();
-}
+function lightboxPrev() { lightboxIndex = (lightboxIndex - 1 + lightboxTotal) % lightboxTotal; updateLightboxContent(); }
+function lightboxNext() { lightboxIndex = (lightboxIndex + 1) % lightboxTotal; updateLightboxContent(); }
 
 $('.lightbox__close').addEventListener('click', closeLightbox);
 $('.lightbox__prev').addEventListener('click', lightboxPrev);
 $('.lightbox__next').addEventListener('click', lightboxNext);
-
 $('#lightbox').addEventListener('click', (e) => {
     if (e.target === $('#lightbox') || e.target === $('.lightbox__stage')) closeLightbox();
 });
-
 document.addEventListener('keydown', (e) => {
     if (!$('#lightbox').classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
@@ -347,86 +341,130 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') lightboxNext();
 });
 
-// ============================================
-// SCROLL REVEAL
-// ============================================
-let revealObserver;
+// ── Scroll Reveal ──
 
+let revealObserver;
+function checkReveals() {
+    $$('.reveal:not(.visible)').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 20 && rect.bottom > 0) el.classList.add('visible');
+    });
+}
 function initRevealObserver() {
     if (revealObserver) revealObserver.disconnect();
-    revealObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
+    revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+        });
+    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
     $$('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+    setTimeout(checkReveals, 100);
+    setTimeout(checkReveals, 700);
 }
 
-// ============================================
-// NAV SCROLL EFFECT
-// ============================================
+// ── Nav Scroll ──
+
 function initNavScroll() {
     const nav = $('#nav');
     let ticking = false;
     window.addEventListener('scroll', () => {
         if (!ticking) {
-            requestAnimationFrame(() => {
-                nav.classList.toggle('scrolled', window.scrollY > 60);
-                ticking = false;
-            });
+            requestAnimationFrame(() => { nav.classList.toggle('scrolled', window.scrollY > 60); ticking = false; });
             ticking = true;
         }
     });
 }
 
-// ============================================
-// ROUTE HANDLER
-// ============================================
+// ── Route Handler ──
+
 function handleRoute() {
     const route = parseRoute();
     updateBreadcrumb(route);
-
     switch (route.view) {
-        case 'landing':
-            renderLanding();
-            switchView('landing');
-            break;
-        case 'category':
-            renderCategory(route.categoryId);
-            switchView('category');
-            break;
-        case 'person':
-            renderPerson(route.categoryId, route.personId);
-            switchView('person');
-            break;
+        case 'landing':   renderLanding(); switchView('landing'); break;
+        case 'category':  renderCategory(route.categoryId); switchView('category'); break;
+        case 'person':    renderPerson(route.categoryId, route.personId); switchView('person'); break;
     }
 }
 
-// ============================================
-// INIT
-// ============================================
+// ── Premium Loader ──
+
+function runLoader() {
+    const loader = $('#loader');
+    const progress = $('.loader-progress');
+    const loaderText = $('.loader-text');
+    const site = $('#site-wrapper');
+
+    site.classList.add('site--hidden');
+
+    setTimeout(() => {
+        loader.classList.add('loader--reveal');
+    }, 400);
+
+    setTimeout(() => {
+        loader.classList.add('loader--done');
+        setTimeout(() => {
+            site.classList.remove('site--hidden');
+            site.classList.add('site--entering');
+            loader.style.display = 'none';
+            setTimeout(() => { site.classList.remove('site--entering'); }, 1200);
+        }, 600);
+    }, 2800);
+}
+
+// ── Countdown Gate ──
+
+const UNLOCK_TIME = new Date('2026-09-10T13:00:00-04:00').getTime();
+
+function initCountdownGate() {
+    const gate = $('#countdown-gate');
+    const site = $('#site-wrapper');
+
+    if (Date.now() >= UNLOCK_TIME) {
+        gate.style.display = 'none';
+        return;
+    }
+
+    site.classList.add('site-wrapper--gated');
+
+    function tick() {
+        const now = Date.now();
+        const diff = UNLOCK_TIME - now;
+
+        if (diff <= 0) {
+            gate.classList.add('gate--open');
+            site.classList.remove('site-wrapper--gated');
+            setTimeout(() => { gate.style.display = 'none'; }, 1200);
+            return;
+        }
+
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+
+        $('#gate-hours').textContent = String(h).padStart(2, '0');
+        $('#gate-minutes').textContent = String(m).padStart(2, '0');
+        $('#gate-seconds').textContent = String(s).padStart(2, '0');
+
+        requestAnimationFrame(() => setTimeout(tick, 250));
+    }
+    tick();
+}
+
+// ── Init ──
+
 function init() {
     $('#footer-year').textContent = new Date().getFullYear();
 
-    // Loading screen
-    setTimeout(() => {
-        $('.loader').classList.add('done');
-        setTimeout(() => { $('.loader').style.display = 'none'; }, 800);
-    }, 1600);
+    runLoader();
+    setTimeout(initCountdownGate, 3600);
 
     renderLanding();
     initNavScroll();
     initRevealObserver();
-
+    window.addEventListener('scroll', checkReveals, { passive: true });
     window.addEventListener('hashchange', handleRoute);
 
-    // Handle initial route after loader
     setTimeout(() => {
         const route = parseRoute();
         if (route.view !== 'landing') handleRoute();
