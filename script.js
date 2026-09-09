@@ -532,39 +532,95 @@ function runLoader() {
 // ── Countdown Gate ──
 
 const UNLOCK_TIME = new Date('2026-09-09T13:00:00-04:00').getTime();
+const GATE_EXPIRE = new Date('2026-09-09T20:00:00-04:00').getTime();
 
 function initCountdownGate() {
     const gate = $('#countdown-gate');
     const site = $('#site-wrapper');
 
-    if (DEV_MODE || Date.now() >= UNLOCK_TIME) {
+    if (DEV_MODE || Date.now() >= GATE_EXPIRE) {
+        gate.style.display = 'none';
+        return;
+    }
+
+    if (Date.now() >= UNLOCK_TIME) {
         gate.style.display = 'none';
         return;
     }
 
     site.classList.add('site-wrapper--gated');
 
+    let inFinalMode = false;
+    let lastSec = -1;
+    let revealStarted = false;
+
     function tick() {
         const now = Date.now();
         const diff = UNLOCK_TIME - now;
 
-        if (diff <= 0) {
-            gate.classList.add('gate--open');
-            site.classList.remove('site-wrapper--gated');
-            setTimeout(() => { gate.style.display = 'none'; }, 1200);
+        if (diff <= 0 && !revealStarted) {
+            revealStarted = true;
+            runFinalReveal();
             return;
         }
+        if (revealStarted) return;
 
-        const h = Math.floor(diff / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
+        const totalSec = Math.ceil(diff / 1000);
 
-        $('#gate-hours').textContent = String(h).padStart(2, '0');
-        $('#gate-minutes').textContent = String(m).padStart(2, '0');
-        $('#gate-seconds').textContent = String(s).padStart(2, '0');
+        if (totalSec <= 60 && !inFinalMode) {
+            inFinalMode = true;
+            gate.classList.add('gate--final-mode');
+            $('#gate-final').hidden = false;
+        }
 
-        requestAnimationFrame(() => setTimeout(tick, 250));
+        if (inFinalMode) {
+            if (totalSec !== lastSec) {
+                lastSec = totalSec;
+                const numEl = $('#gate-final-num');
+                numEl.textContent = totalSec;
+                numEl.classList.remove('gate__final-pop');
+                void numEl.offsetWidth;
+                numEl.classList.add('gate__final-pop');
+            }
+        } else {
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            $('#gate-hours').textContent = String(h).padStart(2, '0');
+            $('#gate-minutes').textContent = String(m).padStart(2, '0');
+            $('#gate-seconds').textContent = String(s).padStart(2, '0');
+        }
+
+        requestAnimationFrame(() => setTimeout(tick, 100));
     }
+
+    function runFinalReveal() {
+        const numEl = $('#gate-final-num');
+        if (!inFinalMode) {
+            gate.classList.add('gate--final-mode');
+            $('#gate-final').hidden = false;
+        }
+
+        const steps = [3, 2, 1];
+        let i = 0;
+
+        function showStep() {
+            if (i < steps.length) {
+                numEl.textContent = steps[i];
+                numEl.classList.remove('gate__final-pop');
+                void numEl.offsetWidth;
+                numEl.classList.add('gate__final-pop');
+                i++;
+                setTimeout(showStep, 800);
+            } else {
+                gate.classList.add('gate--reveal');
+                site.classList.remove('site-wrapper--gated');
+                setTimeout(() => { gate.style.display = 'none'; }, 2000);
+            }
+        }
+        showStep();
+    }
+
     tick();
 }
 
@@ -641,7 +697,7 @@ function loadGallery() {
 function init() {
     $('#footer-year').textContent = new Date().getFullYear();
 
-    if (DEV_MODE || Date.now() >= UNLOCK_TIME) {
+    if (DEV_MODE || Date.now() >= GATE_EXPIRE) {
         $('#countdown-gate').style.display = 'none';
     }
     runLoader();
