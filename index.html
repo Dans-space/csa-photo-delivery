@@ -8,9 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
+
+    <!-- Custom Cursor -->
+    <div id="cursor" class="cursor"></div>
 
     <!-- Premium Loader -->
     <div id="loader" class="loader">
@@ -132,7 +135,16 @@
             <div class="lightbox__stage">
                 <img id="lightbox-img" src="" alt="">
             </div>
-            <div class="lightbox__counter" id="lightbox-counter"></div>
+            <div class="lightbox__bottom">
+                <div class="lightbox__counter" id="lightbox-counter"></div>
+                <a id="lightbox-download" class="lightbox__download" download aria-label="Download photo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                </a>
+            </div>
         </div>
 
         <footer class="footer">
@@ -158,6 +170,6 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=11"></script>
 </body>
 </html>

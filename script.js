@@ -18,22 +18,23 @@ const CONFIG = {
             description: 'Individual portrait sessions',
             heroImage: 'assets/images/hero-portraits.JPG',
             people: [
-                { id: 'jade',     name: 'Jade',     heroImage: 'assets/images/Jade hero.jpg',       albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'victoria', name: 'Victoria', heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'jojo',     name: 'Jojo',     heroImage: 'assets/images/Jojo hero.jpg',       albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'roham',    name: 'Roham',    heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'raphaela', name: 'Raphaela', heroImage: 'assets/images/Raphaela Hero.jpg',   albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'tuya',     name: 'Tuya',     heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'susan',    name: 'Susan',    heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
-                { id: 'rejna',    name: 'Rejna',    heroImage: 'assets/images/Rejna hero.jpg',      albumUrl: 'https://adobe.ly/3UIb7Tp', downloadUrl: '' },
+                { id: 'jade',      name: 'Jade',       heroImage: 'assets/images/Jade hero.jpg',       albumUrl: 'https://adobe.ly/3VjI8Fw', downloadUrl: '' },
+                { id: 'victoria',  name: 'Victoria',  heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/4qZ7Ue4', downloadUrl: '' },
+                { id: 'jojo',      name: 'Jojo',      heroImage: 'assets/images/Jojo hero.jpg',       albumUrl: 'https://adobe.ly/4AiHCYG', downloadUrl: '', bannerPos: 'center 35%' },
+                { id: 'roham',     name: 'Roham',     heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/4r4kk4n', downloadUrl: '', bannerPos: 'center 35%' },
+                { id: 'raphaelle', name: 'Raphaëlle', heroImage: 'assets/images/Raphaela Hero.jpg',   albumUrl: 'https://adobe.ly/46gnLvh', downloadUrl: '', bannerPos: 'center 35%' },
+                { id: 'tuya',      name: 'Tuya',      heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/4ipw5jP', downloadUrl: '', bannerPos: 'center 35%' },
+                { id: 'susan',     name: 'Susan',     heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/4yrs3Mn', downloadUrl: '' },
+                { id: 'rejna',     name: 'Rejna',     heroImage: 'assets/images/Rejna hero.jpg',      albumUrl: 'https://adobe.ly/4gK9vRH', downloadUrl: '' },
             ],
         },
         {
-            id: 'exposed',
-            name: 'Exposed',
+            id: 'groupe-photo',
+            name: 'Groupe Photo',
             locked: true,
             teaser: 'Coming soon',
-            heroImage: '',
+            heroImage: 'assets/images/Grouope photo 1.JPG',
+            bannerImage: 'assets/images/Groupe photo2o.JPG',
             people: [],
         },
         {
@@ -49,11 +50,29 @@ const CONFIG = {
             name: 'The Pool',
             locked: true,
             teaser: 'Coming soon',
-            heroImage: '',
+            heroImage: 'assets/images/The pool.JPG',
+            people: [],
+        },
+        {
+            id: 'exposed',
+            name: 'Exposed',
+            locked: true,
+            teaser: 'Coming soon',
+            heroImage: 'assets/images/Favoryt Exposes.JPG',
             people: [],
         },
     ],
+    jpeg: {
+        id: 'jpeg',
+        name: 'JPEG',
+        subtitle: 'Quick share to family and personal use',
+        heroImage: 'assets/images/Jpeg share.JPG',
+        disclaimer: 'These pictures were not edited and are not intended for professional use — use wisely.',
+        people: [],
+    },
 };
+
+const DEV_MODE = false;
 
 const state = { currentView: null };
 
@@ -133,7 +152,7 @@ function renderLanding() {
         card.style.animationDelay = `${i * 0.1}s`;
 
         const bgStyle = cat.heroImage
-            ? `background-image:url('${cat.heroImage}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(6px) brightness(0.4);' : ''}`
+            ? `background-image:url('${cat.heroImage}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
             : '';
 
         card.innerHTML = `
@@ -148,9 +167,52 @@ function renderLanding() {
 
         if (!cat.locked) {
             card.addEventListener('click', () => navigate(`#${cat.id}`));
+        } else {
+            const msg = document.createElement('div');
+            msg.className = 'category-card__message';
+            msg.innerHTML = `
+                <p class="category-card__message-title">Still in the works</p>
+                <p class="category-card__message-text">Will be available soon</p>
+            `;
+            card.appendChild(msg);
+            card.addEventListener('click', () => {
+                card.classList.remove('clicked');
+                void card.offsetWidth;
+                card.classList.add('clicked');
+                msg.classList.add('visible');
+                setTimeout(() => { msg.classList.remove('visible'); }, 2200);
+                setTimeout(() => { card.classList.remove('clicked'); }, 600);
+            });
         }
         grid.appendChild(card);
     });
+
+    const container = grid.parentElement;
+    let jpegSection = container.querySelector('.jpeg-section');
+    if (jpegSection) jpegSection.remove();
+
+    if (CONFIG.jpeg) {
+        jpegSection = document.createElement('div');
+        jpegSection.className = 'jpeg-section reveal';
+        const jpeg = CONFIG.jpeg;
+        const jpegBg = jpeg.heroImage
+            ? `background-image:url('${jpeg.heroImage}');background-size:cover;background-position:center;filter:blur(3px) brightness(0.5);`
+            : '';
+        jpegSection.innerHTML = `
+            <div class="jpeg-separator"></div>
+            <div class="jpeg-card">
+                <div class="category-card__bg" style="${jpegBg}"></div>
+                <div class="category-card__overlay"></div>
+                <div class="category-card__info">
+                    <div class="category-card__name">${jpeg.name}</div>
+                    <div class="category-card__count">${jpeg.subtitle}</div>
+                </div>
+            </div>
+        `;
+        jpegSection.querySelector('.jpeg-card').addEventListener('click', () => navigate(`#${jpeg.id}`));
+        container.appendChild(jpegSection);
+        setTimeout(checkReveals, 100);
+    }
 }
 
 function renderCategory(categoryId) {
@@ -199,12 +261,59 @@ function renderCategory(categoryId) {
     });
 }
 
+function renderJpeg() {
+    const jpeg = CONFIG.jpeg;
+    if (!jpeg) { navigate('#/'); return; }
+
+    $('#category-eyebrow').textContent = 'Quick Share';
+    $('#category-title').textContent = jpeg.name;
+    $('#category-count').textContent = jpeg.subtitle;
+
+    const existing = $('#category-hero .hero__bg-img');
+    if (existing) existing.remove();
+    if (jpeg.heroImage) {
+        const img = document.createElement('img');
+        img.src = jpeg.heroImage;
+        img.alt = jpeg.name;
+        img.className = 'hero__bg-img';
+        $('#category-hero').insertBefore(img, $('#category-hero').firstChild);
+    }
+
+    const grid = $('#people-container');
+    grid.innerHTML = '';
+
+    const notice = document.createElement('div');
+    notice.className = 'jpeg-disclaimer';
+    notice.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>${jpeg.disclaimer}</p>
+    `;
+    grid.appendChild(notice);
+
+    const photos = jpeg.photos || [];
+    photos.forEach((photo, i) => {
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+        card.style.animationDelay = `${Math.min(i * 0.03, 0.6)}s`;
+        card.innerHTML = `
+            <div class="photo-card__inner">
+                <img src="${photo}" alt="JPEG ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="photo-card__hover">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
 function renderPerson(categoryId, personId) {
     const person = findPerson(categoryId, personId);
     if (!person) { navigate(`#${categoryId}`); return; }
 
     $('#person-name').textContent = person.name;
-    $('#person-photo-count').textContent = '';
+    const photos = person.photos || [];
+    $('#person-photo-count').textContent = photos.length ? `${photos.length} photos` : '';
 
     const banner = $('#person-banner');
     const existing = banner.querySelector('.hero__bg-img');
@@ -214,21 +323,21 @@ function renderPerson(categoryId, personId) {
         img.src = person.heroImage;
         img.alt = person.name;
         img.className = 'hero__bg-img';
+        if (person.bannerPos) img.style.objectPosition = person.bannerPos;
         banner.insertBefore(img, banner.firstChild);
     }
 
     const dlBtn = $('#btn-download');
     const lrBtn = $('#btn-lightroom');
-    dlBtn.href = person.downloadUrl || '#';
+    dlBtn.href = person.downloadUrl || person.albumUrl || '#';
     lrBtn.href = person.albumUrl || '#';
-    if (!person.downloadUrl) dlBtn.style.opacity = '0.4';
+    if (!person.downloadUrl && !person.albumUrl) dlBtn.style.opacity = '0.4';
     else dlBtn.style.opacity = '1';
     if (!person.albumUrl) lrBtn.style.opacity = '0.4';
     else lrBtn.style.opacity = '1';
 
     const grid = $('#photos-container');
     grid.innerHTML = '';
-    const photos = person.photos || [];
     photos.forEach((photo, i) => {
         const card = document.createElement('div');
         card.className = 'photo-card';
@@ -253,7 +362,7 @@ function updateBreadcrumb(route) {
     bc.innerHTML = '';
     if (route.view === 'landing') return;
 
-    const cat = findCategory(route.categoryId);
+    const cat = route.categoryId === 'jpeg' ? CONFIG.jpeg : findCategory(route.categoryId);
     if (!cat) return;
 
     bc.innerHTML += `<span class="breadcrumb__sep">/</span>`;
@@ -324,6 +433,8 @@ function updateLightboxContent() {
     img.alt = `Photo ${lightboxIndex + 1} of ${lightboxTotal}`;
     img.src = lightboxPhotos[lightboxIndex] || '';
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxTotal}`;
+    const dlLink = $('#lightbox-download');
+    if (dlLink) dlLink.href = lightboxPhotos[lightboxIndex] || '';
 }
 function lightboxPrev() { lightboxIndex = (lightboxIndex - 1 + lightboxTotal) % lightboxTotal; updateLightboxContent(); }
 function lightboxNext() { lightboxIndex = (lightboxIndex + 1) % lightboxTotal; updateLightboxContent(); }
@@ -382,7 +493,13 @@ function handleRoute() {
     updateBreadcrumb(route);
     switch (route.view) {
         case 'landing':   renderLanding(); switchView('landing'); break;
-        case 'category':  renderCategory(route.categoryId); switchView('category'); break;
+        case 'category':
+            if (route.categoryId === 'jpeg') {
+                renderJpeg(); switchView('category');
+            } else {
+                renderCategory(route.categoryId); switchView('category');
+            }
+            break;
         case 'person':    renderPerson(route.categoryId, route.personId); switchView('person'); break;
     }
 }
@@ -420,7 +537,7 @@ function initCountdownGate() {
     const gate = $('#countdown-gate');
     const site = $('#site-wrapper');
 
-    if (Date.now() >= UNLOCK_TIME) {
+    if (DEV_MODE || Date.now() >= UNLOCK_TIME) {
         gate.style.display = 'none';
         return;
     }
@@ -451,17 +568,90 @@ function initCountdownGate() {
     tick();
 }
 
+// ── Custom Cursor ──
+
+function initCursor() {
+    const isTouch = matchMedia('(pointer: coarse)').matches || matchMedia('(hover: none)').matches;
+    if (isTouch || window.innerWidth <= 768) return;
+
+    const cursor = $('#cursor');
+    let mx = 0, my = 0, cx = 0, cy = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+    });
+
+    function lerp() {
+        cx += (mx - cx) * 0.15;
+        cy += (my - cy) * 0.15;
+        cursor.style.left = cx + 'px';
+        cursor.style.top = cy + 'px';
+        requestAnimationFrame(lerp);
+    }
+    lerp();
+
+    document.addEventListener('mouseover', (e) => {
+        const el = e.target.closest('a, button, .category-card, .person-card, .photo-card');
+        if (!el) { cursor.className = 'cursor'; return; }
+        if (el.closest('.category-card--locked')) {
+            cursor.className = 'cursor cursor--locked';
+        } else {
+            cursor.className = 'cursor cursor--hover';
+        }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        if (!e.target.closest('a, button, .category-card, .person-card, .photo-card')) return;
+        cursor.className = 'cursor';
+    });
+}
+
+// ── Gallery Loader ──
+
+function loadGallery() {
+    fetch('assets/gallery.json')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+            if (!data || !data.albums) return;
+            data.albums.forEach(album => {
+                if (album.slug === 'jpeg' && CONFIG.jpeg) {
+                    CONFIG.jpeg.photos = album.photos.map(p => p.file);
+                    return;
+                }
+                const cat = findCategory('portraits');
+                if (!cat) return;
+                const person = cat.people.find(p => p.id === album.slug);
+                if (person) {
+                    person.photos = album.photos.map(p => p.file);
+                }
+            });
+            const route = parseRoute();
+            if (route.view === 'person') {
+                renderPerson(route.categoryId, route.personId);
+            } else if (route.categoryId === 'jpeg') {
+                renderJpeg();
+            }
+        })
+        .catch(() => {});
+}
+
 // ── Init ──
 
 function init() {
     $('#footer-year').textContent = new Date().getFullYear();
 
+    if (DEV_MODE || Date.now() >= UNLOCK_TIME) {
+        $('#countdown-gate').style.display = 'none';
+    }
     runLoader();
     setTimeout(initCountdownGate, 3600);
+    initCursor();
 
     renderLanding();
     initNavScroll();
     initRevealObserver();
+    loadGallery();
     window.addEventListener('scroll', checkReveals, { passive: true });
     window.addEventListener('hashchange', handleRoute);
 
