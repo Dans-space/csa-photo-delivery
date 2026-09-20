@@ -40,6 +40,16 @@ const CONFIG = {
             albumUrl: 'https://adobe.ly/3Ti973Q',
         },
         {
+            id: 'exposed',
+            name: 'Exposed',
+            locked: false,
+            unlockStyle: 'revealed',
+            heroImage: 'assets/images/Favoryt Exposes.JPG',
+            people: [],
+            photos: [],
+            albumUrl: 'https://adobe.ly/4xAX5Ri',
+        },
+        {
             id: 'the-statue',
             name: 'The Statue',
             locked: true,
@@ -54,16 +64,6 @@ const CONFIG = {
             teaser: 'Coming soon',
             heroImage: 'assets/images/The pool.JPG',
             people: [],
-        },
-        {
-            id: 'exposed',
-            name: 'Exposed',
-            locked: false,
-            unlockStyle: 'revealed',
-            heroImage: 'assets/images/Favoryt Exposes.JPG',
-            people: [],
-            photos: [],
-            albumUrl: 'https://adobe.ly/4xAX5Ri',
         },
     ],
     jpeg: {

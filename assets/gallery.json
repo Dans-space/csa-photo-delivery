@@ -5033,7 +5033,7 @@
     {
       "slug": "groupe-photo",
       "title": "Groupe Photo",
-      "count": 53,
+      "count": 60,
       "photos": [
         {
           "file": "assets/gallery/groupe-photo/img_5239.jpg",
@@ -5054,6 +5054,16 @@
           "file": "assets/gallery/groupe-photo/img_5242.jpg",
           "name": "IMG_5242.CR3",
           "thumb": "assets/gallery/groupe-photo/thumbs/img_5242.jpg"
+        },
+        {
+          "file": "assets/gallery/groupe-photo/img_5243.jpg",
+          "name": "IMG_5243.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/img_5243.jpg"
+        },
+        {
+          "file": "assets/gallery/groupe-photo/img_5244.jpg",
+          "name": "IMG_5244.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/img_5244.jpg"
         },
         {
           "file": "assets/gallery/groupe-photo/_mg_5367.jpg",
@@ -5079,6 +5089,11 @@
           "file": "assets/gallery/groupe-photo/_mg_5374.jpg",
           "name": "_MG_5374.CR3",
           "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5374.jpg"
+        },
+        {
+          "file": "assets/gallery/groupe-photo/_mg_5375.jpg",
+          "name": "_MG_5375.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5375.jpg"
         },
         {
           "file": "assets/gallery/groupe-photo/_mg_5376.jpg",
@@ -5164,6 +5179,11 @@
           "file": "assets/gallery/groupe-photo/_mg_5397.jpg",
           "name": "_MG_5397.CR3",
           "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5397.jpg"
+        },
+        {
+          "file": "assets/gallery/groupe-photo/_mg_5398.jpg",
+          "name": "_MG_5398.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5398.jpg"
         },
         {
           "file": "assets/gallery/groupe-photo/_mg_5399.jpg",
@@ -5256,6 +5276,16 @@
           "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5448.jpg"
         },
         {
+          "file": "assets/gallery/groupe-photo/_mg_5449.jpg",
+          "name": "_MG_5449.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5449.jpg"
+        },
+        {
+          "file": "assets/gallery/groupe-photo/_mg_5450.jpg",
+          "name": "_MG_5450.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5450.jpg"
+        },
+        {
           "file": "assets/gallery/groupe-photo/_mg_5451.jpg",
           "name": "_MG_5451.CR3",
           "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5451.jpg"
@@ -5299,6 +5329,11 @@
           "file": "assets/gallery/groupe-photo/_mg_5460.jpg",
           "name": "_MG_5460.CR3",
           "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5460.jpg"
+        },
+        {
+          "file": "assets/gallery/groupe-photo/_mg_5461.jpg",
+          "name": "_MG_5461.CR3",
+          "thumb": "assets/gallery/groupe-photo/thumbs/_mg_5461.jpg"
         }
       ]
     }
