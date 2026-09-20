@@ -284,9 +284,10 @@ function renderCategory(categoryId) {
             const dir = directions[i % directions.length];
             card.className = `photo-card photo-card--slide photo-card--${dir}`;
             card.style.animationDelay = `${0.15 + i * 0.12}s`;
+            const src = photo.thumb || photo.file || photo;
             card.innerHTML = `
                 <div class="photo-card__inner">
-                    <img src="${photo}" alt="${cat.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+                    <img src="${src}" alt="${cat.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
                 </div>
                 <div class="photo-card__hover">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
@@ -373,9 +374,10 @@ function renderPerson(categoryId, personId) {
         const card = document.createElement('div');
         card.className = 'photo-card';
         card.style.animationDelay = `${Math.min(i * 0.03, 0.6)}s`;
+        const src = photo.thumb || photo.file || photo;
         card.innerHTML = `
             <div class="photo-card__inner">
-                <img src="${photo}" alt="${person.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+                <img src="${src}" alt="${person.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="photo-card__hover">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
@@ -467,10 +469,12 @@ function closeLightbox() {
 function updateLightboxContent() {
     const img = $('#lightbox-img');
     img.alt = `Photo ${lightboxIndex + 1} of ${lightboxTotal}`;
-    img.src = lightboxPhotos[lightboxIndex] || '';
+    const photo = lightboxPhotos[lightboxIndex];
+    const fullSrc = photo ? (photo.file || photo) : '';
+    img.src = fullSrc;
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxTotal}`;
     const dlLink = $('#lightbox-download');
-    if (dlLink) dlLink.href = lightboxPhotos[lightboxIndex] || '';
+    if (dlLink) dlLink.href = fullSrc;
 }
 function lightboxPrev() { lightboxIndex = (lightboxIndex - 1 + lightboxTotal) % lightboxTotal; updateLightboxContent(); }
 function lightboxNext() { lightboxIndex = (lightboxIndex + 1) % lightboxTotal; updateLightboxContent(); }
@@ -708,19 +712,19 @@ function loadGallery() {
             if (!data || !data.albums) return;
             data.albums.forEach(album => {
                 if (album.slug === 'jpeg' && CONFIG.jpeg) {
-                    CONFIG.jpeg.photos = album.photos.map(p => p.file);
+                    CONFIG.jpeg.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
                     return;
                 }
                 const directCat = findCategory(album.slug);
                 if (directCat && directCat.photos !== undefined && !directCat.people.length) {
-                    directCat.photos = album.photos.map(p => p.file);
+                    directCat.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
                     return;
                 }
                 const cat = findCategory('portraits');
                 if (!cat) return;
                 const person = cat.people.find(p => p.id === album.slug);
                 if (person) {
-                    person.photos = album.photos.map(p => p.file);
+                    person.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
                 }
             });
             const route = parseRoute();
