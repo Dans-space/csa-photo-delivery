@@ -58,10 +58,12 @@ const CONFIG = {
         {
             id: 'exposed',
             name: 'Exposed',
-            locked: true,
-            teaser: 'Coming soon',
+            locked: false,
+            unlockStyle: 'revealed',
             heroImage: 'assets/images/Favoryt Exposes.JPG',
             people: [],
+            photos: [],
+            albumUrl: 'https://adobe.ly/4xAX5Ri',
         },
     ],
     jpeg: {
@@ -773,7 +775,9 @@ function loadGallery() {
                 }
             });
             const route = parseRoute();
-            if (route.view === 'person') {
+            if (route.view === 'landing') {
+                renderLanding();
+            } else if (route.view === 'person') {
                 renderPerson(route.categoryId, route.personId);
             } else if (route.categoryId === 'jpeg') {
                 renderJpeg();
