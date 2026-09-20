@@ -31,11 +31,13 @@ const CONFIG = {
         {
             id: 'groupe-photo',
             name: 'Groupe Photo',
-            locked: true,
-            teaser: 'Coming soon',
+            locked: false,
+            unlockStyle: 'revealed',
             heroImage: 'assets/images/Grouope photo 1.JPG',
             bannerImage: 'assets/images/Groupe photo2o.JPG',
             people: [],
+            photos: [],
+            albumUrl: 'https://adobe.ly/3Ti973Q',
         },
         {
             id: 'the-statue',
@@ -148,25 +150,39 @@ function renderLanding() {
 
     CONFIG.categories.forEach((cat, i) => {
         const card = document.createElement('div');
-        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '');
+        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '') + (cat.unlockStyle === 'revealed' ? ' category-card--revealed' : '');
         card.style.animationDelay = `${i * 0.1}s`;
 
         const bgStyle = cat.heroImage
             ? `background-image:url('${cat.heroImage}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
             : '';
 
+        const lockIcon = cat.locked
+            ? '<div class="category-card__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>'
+            : cat.unlockStyle === 'revealed'
+            ? '<div class="category-card__revealed-lock"><svg viewBox="0 0 48 56" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="24" width="32" height="22" rx="3"/><path d="M14 24V16a10 10 0 0120 0v3" stroke-linecap="round"/><circle cx="24" cy="34" r="2.5" fill="currentColor" stroke="none"/><path d="M24 36.5v3" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="4" cy="32" rx="3" ry="5" opacity="0.35" transform="rotate(-10 4 32)"/><ellipse cx="2" cy="41" rx="2.5" ry="4" opacity="0.2" transform="rotate(8 2 41)"/><ellipse cx="5" cy="49" rx="2" ry="3.5" opacity="0.12"/><ellipse cx="44" cy="32" rx="3" ry="5" opacity="0.35" transform="rotate(10 44 32)"/><ellipse cx="46" cy="41" rx="2.5" ry="4" opacity="0.2" transform="rotate(-8 46 41)"/><ellipse cx="43" cy="49" rx="2" ry="3.5" opacity="0.12"/></svg></div>'
+            : '';
+        const countText = cat.locked ? cat.teaser : (cat.photos && cat.photos.length ? cat.photos.length + ' photos' : cat.people.length + ' people');
+
         card.innerHTML = `
             <div class="category-card__bg" style="${bgStyle}"></div>
             <div class="category-card__overlay"></div>
-            ${cat.locked ? '<div class="category-card__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>' : ''}
+            ${lockIcon}
             <div class="category-card__info">
                 <div class="category-card__name">${cat.name}</div>
-                <div class="category-card__count">${cat.locked ? cat.teaser : cat.people.length + ' people'}</div>
+                <div class="category-card__count">${countText}</div>
             </div>
         `;
 
         if (!cat.locked) {
-            card.addEventListener('click', () => navigate(`#${cat.id}`));
+            card.addEventListener('click', () => {
+                if (cat.unlockStyle === 'revealed') {
+                    card.classList.add('category-card--popping');
+                    setTimeout(() => navigate(`#${cat.id}`), 600);
+                } else {
+                    navigate(`#${cat.id}`);
+                }
+            });
         } else {
             const msg = document.createElement('div');
             msg.className = 'category-card__message';
@@ -221,7 +237,7 @@ function renderCategory(categoryId) {
 
     $('#category-eyebrow').textContent = CONFIG.shoot.subtitle;
     $('#category-title').textContent = cat.name;
-    $('#category-count').textContent = `${cat.people.length} people`;
+    $('#category-count').textContent = cat.photos && cat.photos.length && !cat.people.length ? `${cat.photos.length} photos` : `${cat.people.length} people`;
 
     if (CONFIG.heroImages[categoryId] || cat.heroImage) {
         const src = CONFIG.heroImages[categoryId] || cat.heroImage;
@@ -259,6 +275,27 @@ function renderCategory(categoryId) {
         card.addEventListener('click', () => navigate(`#${categoryId}/${person.id}`));
         grid.appendChild(card);
     });
+
+    if (cat.photos && cat.photos.length && !cat.people.length) {
+        grid.className = 'photo-grid';
+        const directions = ['from-left', 'from-right', 'from-top', 'from-bottom'];
+        cat.photos.forEach((photo, i) => {
+            const card = document.createElement('div');
+            const dir = directions[i % directions.length];
+            card.className = `photo-card photo-card--slide photo-card--${dir}`;
+            card.style.animationDelay = `${0.15 + i * 0.12}s`;
+            card.innerHTML = `
+                <div class="photo-card__inner">
+                    <img src="${photo}" alt="${cat.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+                </div>
+                <div class="photo-card__hover">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </div>
+            `;
+            card.addEventListener('click', () => openLightbox(i, cat.photos.length));
+            grid.appendChild(card);
+        });
+    }
 }
 
 function renderJpeg() {
@@ -413,7 +450,12 @@ function openLightbox(index, total) {
     lightboxTotal = total;
     const route = parseRoute();
     const person = findPerson(route.categoryId, route.personId);
-    lightboxPhotos = person ? (person.photos || []) : [];
+    if (person) {
+        lightboxPhotos = person.photos || [];
+    } else {
+        const cat = findCategory(route.categoryId);
+        lightboxPhotos = (cat && cat.photos) ? cat.photos : [];
+    }
     updateLightboxContent();
     $('#lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -660,13 +702,18 @@ function initCursor() {
 // ── Gallery Loader ──
 
 function loadGallery() {
-    fetch('assets/gallery.json')
+    fetch('assets/gallery.json?v=2')
         .then(r => r.ok ? r.json() : null)
         .then(data => {
             if (!data || !data.albums) return;
             data.albums.forEach(album => {
                 if (album.slug === 'jpeg' && CONFIG.jpeg) {
                     CONFIG.jpeg.photos = album.photos.map(p => p.file);
+                    return;
+                }
+                const directCat = findCategory(album.slug);
+                if (directCat && directCat.photos !== undefined && !directCat.people.length) {
+                    directCat.photos = album.photos.map(p => p.file);
                     return;
                 }
                 const cat = findCategory('portraits');
@@ -681,6 +728,8 @@ function loadGallery() {
                 renderPerson(route.categoryId, route.personId);
             } else if (route.categoryId === 'jpeg') {
                 renderJpeg();
+            } else if (route.view === 'category') {
+                renderCategory(route.categoryId);
             }
         })
         .catch(() => {});
