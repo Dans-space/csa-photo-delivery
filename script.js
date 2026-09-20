@@ -92,6 +92,22 @@ function findPerson(categoryId, personId) {
     return cat ? cat.people.find(p => p.id === personId) : null;
 }
 
+function heroThumb(src) {
+    if (!src) return src;
+    const parts = src.split('/');
+    const fname = parts.pop();
+    return parts.join('/') + '/thumbs/' + fname;
+}
+
+function progressiveLoad(img, thumbSrc, fullSrc) {
+    img.src = thumbSrc;
+    if (thumbSrc !== fullSrc) {
+        const full = new Image();
+        full.onload = () => { img.src = fullSrc; };
+        full.src = fullSrc;
+    }
+}
+
 function parseRoute() {
     const hash = location.hash.replace('#', '') || '/';
     const parts = hash.split('/').filter(Boolean);
@@ -138,9 +154,9 @@ function renderLanding() {
     if (CONFIG.heroImages.landing) {
         if (!$('#landing-hero .hero__bg-img')) {
             const img = document.createElement('img');
-            img.src = CONFIG.heroImages.landing;
             img.alt = CONFIG.shoot.title;
             img.className = 'hero__bg-img';
+            progressiveLoad(img, heroThumb(CONFIG.heroImages.landing), CONFIG.heroImages.landing);
             $('#landing-hero').insertBefore(img, $('#landing-hero').firstChild);
         }
     }
@@ -153,8 +169,9 @@ function renderLanding() {
         card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '') + (cat.unlockStyle === 'revealed' ? ' category-card--revealed' : '');
         card.style.animationDelay = `${i * 0.1}s`;
 
+        const thumbHero = cat.heroImage ? heroThumb(cat.heroImage) : '';
         const bgStyle = cat.heroImage
-            ? `background-image:url('${cat.heroImage}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
+            ? `background-image:url('${thumbHero}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
             : '';
 
         const lockIcon = cat.locked
@@ -173,6 +190,13 @@ function renderLanding() {
                 <div class="category-card__count">${countText}</div>
             </div>
         `;
+
+        if (cat.heroImage && thumbHero !== cat.heroImage) {
+            const bg = card.querySelector('.category-card__bg');
+            const full = new Image();
+            full.onload = () => { bg.style.backgroundImage = `url('${cat.heroImage}')`; };
+            full.src = cat.heroImage;
+        }
 
         if (!cat.locked) {
             card.addEventListener('click', () => {
@@ -244,9 +268,9 @@ function renderCategory(categoryId) {
         const existing = $('#category-hero .hero__bg-img');
         if (existing) existing.remove();
         const img = document.createElement('img');
-        img.src = src;
         img.alt = cat.name;
         img.className = 'hero__bg-img';
+        progressiveLoad(img, heroThumb(src), src);
         $('#category-hero').insertBefore(img, $('#category-hero').firstChild);
     }
 
@@ -261,7 +285,7 @@ function renderCategory(categoryId) {
 
         const hasImage = person.heroImage && person.heroImage.length > 0;
         const imageContent = hasImage
-            ? `<img src="${person.heroImage}" alt="${person.name}" loading="lazy">`
+            ? `<img alt="${person.name}">`
             : `<span class="person-card__initials">${getInitials(person.name)}</span>`;
 
         card.innerHTML = `
@@ -271,6 +295,11 @@ function renderCategory(categoryId) {
                 <div class="person-card__name">${person.name}</div>
             </div>
         `;
+
+        if (hasImage) {
+            const img = card.querySelector('img');
+            progressiveLoad(img, heroThumb(person.heroImage), person.heroImage);
+        }
 
         card.addEventListener('click', () => navigate(`#${categoryId}/${person.id}`));
         grid.appendChild(card);
@@ -284,15 +313,23 @@ function renderCategory(categoryId) {
             const dir = directions[i % directions.length];
             card.className = `photo-card photo-card--slide photo-card--${dir}`;
             card.style.animationDelay = `${0.15 + i * 0.12}s`;
-            const src = photo.thumb || photo.file || photo;
+            const thumbSrc = photo.thumb || photo.file || photo;
+            const fullSrc = photo.file || photo;
+            const eager = i < 10;
             card.innerHTML = `
                 <div class="photo-card__inner">
-                    <img src="${src}" alt="${cat.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+                    <img alt="${cat.name} photo ${i + 1}" ${eager ? '' : 'loading="lazy"'} style="width:100%;height:100%;object-fit:cover;">
                 </div>
                 <div class="photo-card__hover">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                 </div>
             `;
+            const img = card.querySelector('img');
+            if (eager) {
+                progressiveLoad(img, thumbSrc, fullSrc);
+            } else {
+                img.src = fullSrc;
+            }
             card.addEventListener('click', () => openLightbox(i, cat.photos.length));
             grid.appendChild(card);
         });
@@ -352,10 +389,10 @@ function renderPerson(categoryId, personId) {
     if (existing) existing.remove();
     if (person.heroImage) {
         const img = document.createElement('img');
-        img.src = person.heroImage;
         img.alt = person.name;
         img.className = 'hero__bg-img';
         if (person.bannerPos) img.style.objectPosition = person.bannerPos;
+        progressiveLoad(img, heroThumb(person.heroImage), person.heroImage);
         banner.insertBefore(img, banner.firstChild);
     }
 
@@ -374,15 +411,23 @@ function renderPerson(categoryId, personId) {
         const card = document.createElement('div');
         card.className = 'photo-card';
         card.style.animationDelay = `${Math.min(i * 0.03, 0.6)}s`;
-        const src = photo.thumb || photo.file || photo;
+        const thumbSrc = photo.thumb || photo.file || photo;
+        const fullSrc = photo.file || photo;
+        const eager = i < 10;
         card.innerHTML = `
             <div class="photo-card__inner">
-                <img src="${src}" alt="${person.name} photo ${i + 1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+                <img alt="${person.name} photo ${i + 1}" ${eager ? '' : 'loading="lazy"'} style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="photo-card__hover">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
             </div>
         `;
+        const img = card.querySelector('img');
+        if (eager) {
+            progressiveLoad(img, thumbSrc, fullSrc);
+        } else {
+            img.src = fullSrc;
+        }
         card.addEventListener('click', () => openLightbox(i, photos.length));
         grid.appendChild(card);
     });
