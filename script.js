@@ -276,6 +276,15 @@ function renderCategory(categoryId) {
         $('#category-hero').insertBefore(img, $('#category-hero').firstChild);
     }
 
+    const actionsBar = $('#category-actions');
+    if (cat.photos !== undefined && !cat.people.length && cat.albumUrl) {
+        actionsBar.style.display = '';
+        $('#cat-btn-download').href = cat.downloadUrl || cat.albumUrl;
+        $('#cat-btn-lightroom').href = cat.albumUrl;
+    } else {
+        actionsBar.style.display = 'none';
+    }
+
     const grid = $('#people-container');
     grid.innerHTML = '';
 
