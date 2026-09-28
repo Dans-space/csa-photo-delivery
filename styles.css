@@ -378,6 +378,121 @@ button { border: none; background: none; cursor: pointer; font: inherit; color: 
     background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
     margin: 0.75rem 0;
 }
+
+/* ── Banner Collection (Portraits) ── */
+.collection-banner {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    margin-bottom: 0;
+    transition: border-color 0.4s;
+    z-index: 2;
+}
+.collection-banner:hover {
+    border-color: rgba(196, 162, 101, 0.2);
+}
+.collection-banner.open {
+    border-color: rgba(196, 162, 101, 0.15);
+}
+.collection-banner__bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    filter: brightness(0.5) saturate(0.7);
+    transition: transform 0.7s var(--ease-out), filter 0.5s ease;
+}
+.collection-banner:hover .collection-banner__bg {
+    transform: scale(1.03);
+    filter: brightness(0.65) saturate(0.85);
+}
+.collection-banner__overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(9,8,7,0.9) 0%, rgba(9,8,7,0.3) 50%, rgba(9,8,7,0.15) 100%);
+}
+.collection-banner__content {
+    position: relative; z-index: 2;
+    padding: 3rem 2.5rem 2rem;
+    min-height: 220px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+}
+.collection-banner__name {
+    font-family: var(--font-serif);
+    font-size: 2.4rem; font-weight: 400; letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.collection-banner__count {
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-secondary); margin-top: 0.3rem;
+}
+.collection-banner__hint {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-top: 0.75rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: opacity 0.3s;
+}
+.collection-banner__hint svg {
+    width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2;
+    transition: transform 0.4s var(--ease-out);
+}
+.collection-banner.open .collection-banner__hint svg {
+    transform: rotate(180deg);
+}
+
+/* Tray that slides open from behind the banner */
+.collection-tray {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s var(--ease-out), opacity 0.5s ease, transform 0.5s var(--ease-out);
+    margin-top: -12px;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    transform: translateY(-8px);
+}
+.collection-tray.peek {
+    max-height: 55px;
+    opacity: 0.5;
+    transform: translateY(-4px);
+}
+.collection-tray.open {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    transform: translateY(0);
+}
+.collection-tray__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 0.5rem 2rem 0;
+    max-width: 80%;
+    margin: 0 auto;
+}
+.collection-tray__inner .category-card {
+    aspect-ratio: 16 / 9;
+}
+
+/* Separator between sections */
+.section-separator {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+    margin: 2.5rem 0 2.5rem;
+}
+
+@media (min-width: 700px) {
+    .collection-banner__content { min-height: 260px; padding: 4rem 3rem 2.5rem; }
+    .collection-banner__name { font-size: 3rem; }
+}
+@media (max-width: 600px) {
+    .collection-banner__content { min-height: 160px; padding: 2rem 1.5rem 1.5rem; }
+    .collection-banner__name { font-size: 1.8rem; }
+    .collection-tray__inner { grid-template-columns: 1fr; max-width: 100%; padding: 0.5rem 0 0; }
+}
 .category-card {
     position: relative; aspect-ratio: 16 / 10; overflow: hidden; cursor: pointer;
     background: var(--bg-card); border: 1px solid var(--line);

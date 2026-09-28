@@ -234,26 +234,101 @@ function renderLanding() {
 
     const grid = $('#categories-container');
     grid.innerHTML = '';
+    grid.classList.remove('categories-grid--has-featured');
 
-    const featured = CONFIG.categories.filter(c => c.subcategories);
-    const regular = CONFIG.categories.filter(c => !c.subcategories);
-    const hasFeatured = featured.length > 0;
-    if (hasFeatured) grid.classList.add('categories-grid--has-featured');
+    const gridParent = grid.parentElement;
+    gridParent.querySelectorAll('.collection-banner, .collection-tray, .section-separator').forEach(el => el.remove());
 
-    const ordered = [...featured, ...regular];
-    let dividerInserted = false;
+    const bannerCats = CONFIG.categories.filter(c => c.subcategories);
+    const regularCats = CONFIG.categories.filter(c => !c.subcategories);
 
-    ordered.forEach((cat, i) => {
-        if (!dividerInserted && !cat.subcategories && hasFeatured) {
-            const divider = document.createElement('div');
-            divider.className = 'categories-grid__divider';
-            grid.appendChild(divider);
-            dividerInserted = true;
+    bannerCats.forEach(cat => {
+        const banner = document.createElement('div');
+        banner.className = 'collection-banner reveal';
+        const thumbSrc = cat.heroImage ? heroThumb(cat.heroImage) : '';
+        const hasNew = cat.subcategories.some(s => s.isNew);
+        banner.innerHTML = `
+            <div class="collection-banner__bg" style="background-image:url('${thumbSrc}');background-size:cover;background-position:center;"></div>
+            <div class="collection-banner__overlay"></div>
+            ${hasNew ? '<div class="category-card__new">NEW</div>' : ''}
+            <div class="collection-banner__content">
+                <div class="collection-banner__name">${cat.name}</div>
+                <div class="collection-banner__count">${cat.subcategories.length} collections</div>
+                <div class="collection-banner__hint">
+                    <span>Browse collections</span>
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+        `;
+
+        if (cat.heroImage && thumbSrc !== cat.heroImage) {
+            const bg = banner.querySelector('.collection-banner__bg');
+            const full = new Image();
+            full.onload = () => { bg.style.backgroundImage = `url('${cat.heroImage}')`; };
+            full.src = cat.heroImage;
         }
 
+        const tray = document.createElement('div');
+        tray.className = 'collection-tray';
+        const trayInner = document.createElement('div');
+        trayInner.className = 'collection-tray__inner';
+
+        cat.subcategories.forEach((sub, si) => {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.style.animationDelay = `${si * 0.1}s`;
+            const subThumb = sub.heroImage ? heroThumb(sub.heroImage) : '';
+            const subBgStyle = sub.heroImage ? `background-image:url('${subThumb}');background-size:cover;background-position:center;` : '';
+            const subCount = sub.photos !== undefined ? (sub.photos.length || 0) + ' photos' : sub.people.length + ' people';
+            const subNewBadge = sub.isNew ? '<div class="category-card__new">NEW</div>' : '';
+            card.innerHTML = `
+                <div class="category-card__bg" style="${subBgStyle}"></div>
+                <div class="category-card__overlay"></div>
+                ${subNewBadge}
+                <div class="category-card__info">
+                    <div class="category-card__name">${sub.name}</div>
+                    <div class="category-card__count">${subCount}</div>
+                </div>
+            `;
+            if (sub.heroImage && subThumb !== sub.heroImage) {
+                const bg = card.querySelector('.category-card__bg');
+                const full = new Image();
+                full.onload = () => { bg.style.backgroundImage = `url('${sub.heroImage}')`; };
+                full.src = sub.heroImage;
+            }
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigate(`#${cat.id}/${sub.id}`);
+            });
+            trayInner.appendChild(card);
+        });
+        tray.appendChild(trayInner);
+
+        banner.addEventListener('mouseenter', () => {
+            if (!banner.classList.contains('open')) {
+                tray.classList.add('peek');
+            }
+        });
+        banner.addEventListener('mouseleave', () => {
+            tray.classList.remove('peek');
+        });
+        banner.addEventListener('click', () => {
+            tray.classList.remove('peek');
+            const isOpen = banner.classList.toggle('open');
+            tray.classList.toggle('open', isOpen);
+        });
+
+        grid.before(banner);
+        grid.before(tray);
+    });
+
+    const sep1 = document.createElement('div');
+    sep1.className = 'section-separator';
+    grid.before(sep1);
+
+    regularCats.forEach((cat, i) => {
         const card = document.createElement('div');
-        const isFeatured = !!cat.subcategories;
-        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '') + (isFeatured ? ' category-card--featured' : '');
+        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '');
         card.style.animationDelay = `${i * 0.1}s`;
 
         const lockIcon = cat.locked
@@ -263,34 +338,22 @@ function renderLanding() {
         let countText;
         if (cat.locked) {
             countText = cat.teaser;
-        } else if (cat.subcategories) {
-            countText = cat.subcategories.length + ' collections';
         } else if (cat.photos !== undefined) {
             countText = cat.photos.length + ' photos';
         } else {
             countText = (cat.people || []).length + ' people';
         }
 
-        const hasNew = cat.isNew || (cat.subcategories && cat.subcategories.some(s => s.isNew));
+        const hasNew = cat.isNew;
         const newBadge = hasNew ? '<div class="category-card__new">NEW</div>' : '';
 
-        let bgHtml;
-        if (cat.subcategories && !cat.locked) {
-            const slices = cat.subcategories.map(sub => {
-                const thumb = sub.heroImage ? heroThumb(sub.heroImage) : '';
-                return `<div class="category-card__slice" style="background-image:url('${thumb}');background-size:cover;background-position:center;"></div>`;
-            }).join('');
-            bgHtml = `<div class="category-card__bg category-card__bg--split">${slices}</div>`;
-        } else {
-            const thumbHero = cat.heroImage ? heroThumb(cat.heroImage) : '';
-            const bgStyle = cat.heroImage
-                ? `background-image:url('${thumbHero}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
-                : '';
-            bgHtml = `<div class="category-card__bg" style="${bgStyle}"></div>`;
-        }
+        const thumbHero = cat.heroImage ? heroThumb(cat.heroImage) : '';
+        const bgStyle = cat.heroImage
+            ? `background-image:url('${thumbHero}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
+            : '';
 
         card.innerHTML = `
-            ${bgHtml}
+            <div class="category-card__bg" style="${bgStyle}"></div>
             <div class="category-card__overlay"></div>
             ${lockIcon}
             ${newBadge}
@@ -300,23 +363,11 @@ function renderLanding() {
             </div>
         `;
 
-        if (cat.subcategories && !cat.locked) {
-            cat.subcategories.forEach((sub, si) => {
-                if (!sub.heroImage) return;
-                const slice = card.querySelectorAll('.category-card__slice')[si];
-                if (!slice) return;
-                const full = new Image();
-                full.onload = () => { slice.style.backgroundImage = `url('${sub.heroImage}')`; };
-                full.src = sub.heroImage;
-            });
-        } else if (cat.heroImage) {
-            const thumbHero = heroThumb(cat.heroImage);
-            if (thumbHero !== cat.heroImage) {
-                const bg = card.querySelector('.category-card__bg');
-                const full = new Image();
-                full.onload = () => { bg.style.backgroundImage = `url('${cat.heroImage}')`; };
-                full.src = cat.heroImage;
-            }
+        if (cat.heroImage && thumbHero !== cat.heroImage) {
+            const bg = card.querySelector('.category-card__bg');
+            const full = new Image();
+            full.onload = () => { bg.style.backgroundImage = `url('${cat.heroImage}')`; };
+            full.src = cat.heroImage;
         }
 
         if (!cat.locked) {
@@ -341,8 +392,8 @@ function renderLanding() {
         grid.appendChild(card);
     });
 
-    const container = grid.parentElement;
-    let jpegSection = container.querySelector('.jpeg-section');
+    const jpegParent = grid.parentElement;
+    let jpegSection = jpegParent.querySelector('.jpeg-section');
     if (jpegSection) jpegSection.remove();
 
     if (CONFIG.jpeg) {
@@ -364,7 +415,7 @@ function renderLanding() {
             </div>
         `;
         jpegSection.querySelector('.jpeg-card').addEventListener('click', () => navigate(`#${jpeg.id}`));
-        container.appendChild(jpegSection);
+        jpegParent.appendChild(jpegSection);
         setTimeout(checkReveals, 100);
     }
 }
