@@ -235,9 +235,25 @@ function renderLanding() {
     const grid = $('#categories-container');
     grid.innerHTML = '';
 
-    CONFIG.categories.forEach((cat, i) => {
+    const featured = CONFIG.categories.filter(c => c.subcategories);
+    const regular = CONFIG.categories.filter(c => !c.subcategories);
+    const hasFeatured = featured.length > 0;
+    if (hasFeatured) grid.classList.add('categories-grid--has-featured');
+
+    const ordered = [...featured, ...regular];
+    let dividerInserted = false;
+
+    ordered.forEach((cat, i) => {
+        if (!dividerInserted && !cat.subcategories && hasFeatured) {
+            const divider = document.createElement('div');
+            divider.className = 'categories-grid__divider';
+            grid.appendChild(divider);
+            dividerInserted = true;
+        }
+
         const card = document.createElement('div');
-        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '');
+        const isFeatured = !!cat.subcategories;
+        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '') + (isFeatured ? ' category-card--featured' : '');
         card.style.animationDelay = `${i * 0.1}s`;
 
         const lockIcon = cat.locked

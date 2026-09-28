@@ -372,10 +372,25 @@ button { border: none; background: none; cursor: pointer; font: inherit; color: 
 .categories-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;
 }
+.categories-grid__divider {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+    margin: 0.75rem 0;
+}
 .category-card {
     position: relative; aspect-ratio: 16 / 10; overflow: hidden; cursor: pointer;
     background: var(--bg-card); border: 1px solid var(--line);
     transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out), border-color 0.4s;
+}
+.category-card--featured {
+    grid-column: span 1;
+    aspect-ratio: 16 / 9;
+    border-color: rgba(196, 162, 101, 0.12);
+}
+@media (min-width: 700px) {
+    .categories-grid--has-featured { grid-template-columns: repeat(2, 1fr); }
+    .category-card--featured { aspect-ratio: 16 / 9; min-height: 280px; }
 }
 .category-card:hover {
     transform: translateY(-4px);
@@ -387,7 +402,11 @@ button { border: none; background: none; cursor: pointer; font: inherit; color: 
 }
 .category-card--locked:hover {
     transform: none; box-shadow: none;
-    border-color: rgba(196, 162, 101, 0.08);
+    border-color: rgba(196, 162, 101, 0.15);
+}
+.category-card--locked:hover .category-card__bg {
+    filter: blur(2px) brightness(0.55) !important;
+    transition: filter 0.5s ease;
     animation: lockedShake 0.5s steps(8) both;
 }
 @keyframes lockedShake {
