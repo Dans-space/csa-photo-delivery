@@ -19,13 +19,13 @@ const CONFIG = {
             heroImage: 'assets/images/hero-portraits.JPG',
             people: [
                 { id: 'jade',      name: 'Jade',       heroImage: 'assets/images/Jade hero.jpg',       albumUrl: 'https://adobe.ly/3VjI8Fw', downloadUrl: '' },
-                { id: 'victoria',  name: 'Victoria',  heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/4qZ7Ue4', downloadUrl: '' },
                 { id: 'jojo',      name: 'Jojo',      heroImage: 'assets/images/Jojo hero.jpg',       albumUrl: 'https://adobe.ly/4AiHCYG', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'roham',     name: 'Roham',     heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/4r4kk4n', downloadUrl: '', bannerPos: 'center 35%' },
                 { id: 'raphaelle', name: 'Raphaëlle', heroImage: 'assets/images/Raphaela Hero.jpg',   albumUrl: 'https://adobe.ly/46gnLvh', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'tuya',      name: 'Tuya',      heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/4ipw5jP', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'susan',     name: 'Susan',     heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/4yrs3Mn', downloadUrl: '' },
                 { id: 'rejna',     name: 'Rejna',     heroImage: 'assets/images/Rejna hero.jpg',      albumUrl: 'https://adobe.ly/4gK9vRH', downloadUrl: '' },
+                { id: 'roham',     name: 'Roham',     heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/4r4kk4n', downloadUrl: '', bannerPos: 'center 35%' },
+                { id: 'susan',     name: 'Susan',     heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/4yrs3Mn', downloadUrl: '' },
+                { id: 'tuya',      name: 'Tuya',      heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/4ipw5jP', downloadUrl: '', bannerPos: 'center 35%' },
+                { id: 'victoria',  name: 'Victoria',  heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/4qZ7Ue4', downloadUrl: '' },
             ],
         },
         {
@@ -36,7 +36,7 @@ const CONFIG = {
             people: [
                 { id: 'jade-stairs',      name: 'Jade',       heroImage: 'assets/gallery/jade-stairs/_mg_5301.jpg',           albumUrl: 'https://adobe.ly/4jp4n71', downloadUrl: '' },
                 { id: 'jojo-stairs',      name: 'Jojo',       heroImage: 'assets/gallery/jojo-stairs/_mg_5328.jpg',           albumUrl: 'https://adobe.ly/4d2Kz5G', downloadUrl: '' },
-                { id: 'raphaelle-stairs', name: 'Raphaëlle',  heroImage: 'assets/gallery/raphaelle-stairs/_mg_5328.jpg',      albumUrl: 'https://adobe.ly/4d2Kz5G', downloadUrl: '' },
+                { id: 'raphaelle-stairs', name: 'Raphaëlle',  heroImage: 'assets/gallery/raphaelle-stairs/_mg_5337.jpg',      albumUrl: 'https://adobe.ly/46PcrGL', downloadUrl: '' },
                 { id: 'rejna-stairs',     name: 'Rejna',      heroImage: 'assets/gallery/rejna-stairs/_mg_5355.jpg',          albumUrl: 'https://adobe.ly/4ABKVdA', downloadUrl: '' },
                 { id: 'roham-stairs',     name: 'Roham',      heroImage: 'assets/gallery/roham-stairs/_mg_5288.jpg',          albumUrl: 'https://adobe.ly/4d9qvyw', downloadUrl: '' },
                 { id: 'susan-stairs',     name: 'Susan',      heroImage: 'assets/gallery/susan-stairs/_mg_5315.jpg',          albumUrl: 'https://adobe.ly/3VgzyYn', downloadUrl: '' },
