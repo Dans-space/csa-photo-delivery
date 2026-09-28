@@ -237,18 +237,21 @@ function renderLanding() {
     grid.classList.remove('categories-grid--has-featured');
 
     const gridParent = grid.parentElement;
-    gridParent.querySelectorAll('.collection-banner, .collection-tray, .section-separator').forEach(el => el.remove());
+    gridParent.querySelectorAll('.collection-deck, .section-separator').forEach(el => el.remove());
 
     const bannerCats = CONFIG.categories.filter(c => c.subcategories);
     const regularCats = CONFIG.categories.filter(c => !c.subcategories);
 
     bannerCats.forEach(cat => {
+        const deck = document.createElement('div');
+        deck.className = 'collection-deck reveal';
+
         const banner = document.createElement('div');
-        banner.className = 'collection-banner reveal';
+        banner.className = 'collection-banner';
         const thumbSrc = cat.heroImage ? heroThumb(cat.heroImage) : '';
         const hasNew = cat.subcategories.some(s => s.isNew);
         banner.innerHTML = `
-            <div class="collection-banner__bg" style="background-image:url('${thumbSrc}');background-size:cover;background-position:center;"></div>
+            <div class="collection-banner__bg" style="background-image:url('${thumbSrc}')"></div>
             <div class="collection-banner__overlay"></div>
             ${hasNew ? '<div class="category-card__new">NEW</div>' : ''}
             <div class="collection-banner__content">
@@ -275,23 +278,21 @@ function renderLanding() {
 
         cat.subcategories.forEach((sub, si) => {
             const card = document.createElement('div');
-            card.className = 'category-card';
-            card.style.animationDelay = `${si * 0.1}s`;
+            card.className = 'collection-tray__card';
             const subThumb = sub.heroImage ? heroThumb(sub.heroImage) : '';
-            const subBgStyle = sub.heroImage ? `background-image:url('${subThumb}');background-size:cover;background-position:center;` : '';
             const subCount = sub.photos !== undefined ? (sub.photos.length || 0) + ' photos' : sub.people.length + ' people';
             const subNewBadge = sub.isNew ? '<div class="category-card__new">NEW</div>' : '';
             card.innerHTML = `
-                <div class="category-card__bg" style="${subBgStyle}"></div>
-                <div class="category-card__overlay"></div>
+                <div class="collection-tray__card-bg" style="background-image:url('${subThumb}')"></div>
+                <div class="collection-tray__card-overlay"></div>
                 ${subNewBadge}
-                <div class="category-card__info">
-                    <div class="category-card__name">${sub.name}</div>
-                    <div class="category-card__count">${subCount}</div>
+                <div class="collection-tray__card-info">
+                    <div class="collection-tray__card-name">${sub.name}</div>
+                    <div class="collection-tray__card-count">${subCount}</div>
                 </div>
             `;
             if (sub.heroImage && subThumb !== sub.heroImage) {
-                const bg = card.querySelector('.category-card__bg');
+                const bg = card.querySelector('.collection-tray__card-bg');
                 const full = new Image();
                 full.onload = () => { bg.style.backgroundImage = `url('${sub.heroImage}')`; };
                 full.src = sub.heroImage;
@@ -304,22 +305,24 @@ function renderLanding() {
         });
         tray.appendChild(trayInner);
 
-        banner.addEventListener('mouseenter', () => {
-            if (!banner.classList.contains('open')) {
-                tray.classList.add('peek');
+        deck.appendChild(banner);
+        deck.appendChild(tray);
+
+        deck.addEventListener('mouseenter', () => {
+            if (!deck.classList.contains('open')) {
+                deck.classList.add('peek');
             }
         });
-        banner.addEventListener('mouseleave', () => {
-            tray.classList.remove('peek');
+        deck.addEventListener('mouseleave', () => {
+            deck.classList.remove('peek');
         });
         banner.addEventListener('click', () => {
-            tray.classList.remove('peek');
-            const isOpen = banner.classList.toggle('open');
-            tray.classList.toggle('open', isOpen);
+            deck.classList.remove('peek');
+            const isOpen = deck.classList.toggle('open');
+            banner.classList.toggle('open', isOpen);
         });
 
-        grid.before(banner);
-        grid.before(tray);
+        grid.before(deck);
     });
 
     const sep1 = document.createElement('div');
