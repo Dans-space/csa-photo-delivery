@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
 
@@ -57,6 +57,14 @@
             <div class="nav-inner">
                 <a href="#/" class="nav-brand">CSA <span class="nav-x">&times;</span> Dan's <em>Studios</em></a>
                 <div id="breadcrumb" class="breadcrumb"></div>
+                <div id="nav-notif" class="nav-notif" style="display:none;">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    <span id="notif-badge" class="nav-notif__badge"></span>
+                    <div id="notif-dropdown" class="nav-notif__dropdown">
+                        <div class="nav-notif__title">New Albums</div>
+                        <div id="notif-list"></div>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -191,6 +199,6 @@
 
     </div>
 
-    <script src="script.js?v=22"></script>
+    <script src="script.js?v=25"></script>
 </body>
 </html>

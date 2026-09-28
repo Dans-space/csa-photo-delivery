@@ -12,36 +12,51 @@ const CONFIG = {
     },
     categories: [
         {
+            id: 'other',
+            name: 'Other',
+            locked: false,
+            heroImage: 'assets/gallery/other/_mg_5236.jpg',
+            photos: [],
+            albumUrl: 'https://adobe.ly/3V6NMLp',
+            isNew: true,
+        },
+        {
             id: 'portraits',
             name: 'Portraits',
             locked: false,
             description: 'Individual portrait sessions',
             heroImage: 'assets/images/hero-portraits.JPG',
-            people: [
-                { id: 'jade',      name: 'Jade',       heroImage: 'assets/images/Jade hero.jpg',       albumUrl: 'https://adobe.ly/3VjI8Fw', downloadUrl: '' },
-                { id: 'jojo',      name: 'Jojo',      heroImage: 'assets/images/Jojo hero.jpg',       albumUrl: 'https://adobe.ly/4AiHCYG', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'raphaelle', name: 'Raphaëlle', heroImage: 'assets/images/Raphaela Hero.jpg',   albumUrl: 'https://adobe.ly/46gnLvh', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'rejna',     name: 'Rejna',     heroImage: 'assets/images/Rejna hero.jpg',      albumUrl: 'https://adobe.ly/4gK9vRH', downloadUrl: '' },
-                { id: 'roham',     name: 'Roham',     heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/4r4kk4n', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'susan',     name: 'Susan',     heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/4yrs3Mn', downloadUrl: '' },
-                { id: 'tuya',      name: 'Tuya',      heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/4ipw5jP', downloadUrl: '', bannerPos: 'center 35%' },
-                { id: 'victoria',  name: 'Victoria',  heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/4qZ7Ue4', downloadUrl: '' },
-            ],
-        },
-        {
-            id: 'stairs-portraits',
-            name: 'Stairs Portraits',
-            locked: false,
-            heroImage: 'assets/gallery/victoria-stairs/img_5245.jpg',
-            people: [
-                { id: 'jade-stairs',      name: 'Jade',       heroImage: 'assets/gallery/jade-stairs/_mg_5301.jpg',           albumUrl: 'https://adobe.ly/4jp4n71', downloadUrl: '' },
-                { id: 'jojo-stairs',      name: 'Jojo',       heroImage: 'assets/gallery/jojo-stairs/_mg_5328.jpg',           albumUrl: 'https://adobe.ly/4d2Kz5G', downloadUrl: '' },
-                { id: 'raphaelle-stairs', name: 'Raphaëlle',  heroImage: 'assets/gallery/raphaelle-stairs/_mg_5337.jpg',      albumUrl: 'https://adobe.ly/46PcrGL', downloadUrl: '' },
-                { id: 'rejna-stairs',     name: 'Rejna',      heroImage: 'assets/gallery/rejna-stairs/_mg_5355.jpg',          albumUrl: 'https://adobe.ly/4ABKVdA', downloadUrl: '' },
-                { id: 'roham-stairs',     name: 'Roham',      heroImage: 'assets/gallery/roham-stairs/_mg_5288.jpg',          albumUrl: 'https://adobe.ly/4d9qvyw', downloadUrl: '' },
-                { id: 'susan-stairs',     name: 'Susan',      heroImage: 'assets/gallery/susan-stairs/_mg_5315.jpg',          albumUrl: 'https://adobe.ly/3VgzyYn', downloadUrl: '' },
-                { id: 'tuya-stairs',      name: 'Tuya',       heroImage: 'assets/gallery/tuya-stairs/_mg_5271.jpg',           albumUrl: 'https://adobe.ly/4d4Pumz', downloadUrl: '' },
-                { id: 'victoria-stairs',  name: 'Victoria',   heroImage: 'assets/gallery/victoria-stairs/img_5245.jpg',       albumUrl: 'https://adobe.ly/4hhtgAd', downloadUrl: '' },
+            subcategories: [
+                {
+                    id: 'first-portraits',
+                    name: 'First Portraits',
+                    heroImage: 'assets/images/hero-portraits.JPG',
+                    people: [
+                        { id: 'jade',      name: 'Jade',       heroImage: 'assets/images/Jade hero.jpg',       albumUrl: 'https://adobe.ly/3VjI8Fw', downloadUrl: '' },
+                        { id: 'jojo',      name: 'Jojo',      heroImage: 'assets/images/Jojo hero.jpg',       albumUrl: 'https://adobe.ly/4AiHCYG', downloadUrl: '', bannerPos: 'center 35%' },
+                        { id: 'raphaelle', name: 'Raphaëlle', heroImage: 'assets/images/Raphaela Hero.jpg',   albumUrl: 'https://adobe.ly/46gnLvh', downloadUrl: '', bannerPos: 'center 35%' },
+                        { id: 'rejna',     name: 'Rejna',     heroImage: 'assets/images/Rejna hero.jpg',      albumUrl: 'https://adobe.ly/4gK9vRH', downloadUrl: '' },
+                        { id: 'roham',     name: 'Roham',     heroImage: 'assets/images/Roham hero.jpg',      albumUrl: 'https://adobe.ly/4r4kk4n', downloadUrl: '', bannerPos: 'center 35%' },
+                        { id: 'susan',     name: 'Susan',     heroImage: 'assets/images/Susan Hero.jpg',      albumUrl: 'https://adobe.ly/4yrs3Mn', downloadUrl: '' },
+                        { id: 'tuya',      name: 'Tuya',      heroImage: 'assets/images/Tuya hero.jpg',       albumUrl: 'https://adobe.ly/4ipw5jP', downloadUrl: '', bannerPos: 'center 35%' },
+                        { id: 'victoria',  name: 'Victoria',  heroImage: 'assets/images/Victoria hero.jpg',   albumUrl: 'https://adobe.ly/4qZ7Ue4', downloadUrl: '' },
+                    ],
+                },
+                {
+                    id: 'stairs-portraits',
+                    name: 'Stairs Portraits',
+                    heroImage: 'assets/gallery/victoria-stairs/img_5245.jpg',
+                    people: [
+                        { id: 'jade-stairs',      name: 'Jade',       heroImage: 'assets/gallery/jade-stairs/_mg_5301.jpg',           albumUrl: 'https://adobe.ly/4jp4n71', downloadUrl: '' },
+                        { id: 'jojo-stairs',      name: 'Jojo',       heroImage: 'assets/gallery/jojo-stairs/_mg_5328.jpg',           albumUrl: 'https://adobe.ly/4d2Kz5G', downloadUrl: '' },
+                        { id: 'raphaelle-stairs', name: 'Raphaëlle',  heroImage: 'assets/gallery/raphaelle-stairs/_mg_5337.jpg',      albumUrl: 'https://adobe.ly/46PcrGL', downloadUrl: '' },
+                        { id: 'rejna-stairs',     name: 'Rejna',      heroImage: 'assets/gallery/rejna-stairs/_mg_5355.jpg',          albumUrl: 'https://adobe.ly/4ABKVdA', downloadUrl: '' },
+                        { id: 'roham-stairs',     name: 'Roham',      heroImage: 'assets/gallery/roham-stairs/_mg_5288.jpg',          albumUrl: 'https://adobe.ly/4d9qvyw', downloadUrl: '' },
+                        { id: 'susan-stairs',     name: 'Susan',      heroImage: 'assets/gallery/susan-stairs/_mg_5315.jpg',          albumUrl: 'https://adobe.ly/3VgzyYn', downloadUrl: '' },
+                        { id: 'tuya-stairs',      name: 'Tuya',       heroImage: 'assets/gallery/tuya-stairs/_mg_5271.jpg',           albumUrl: 'https://adobe.ly/4d4Pumz', downloadUrl: '' },
+                        { id: 'victoria-stairs',  name: 'Victoria',   heroImage: 'assets/gallery/victoria-stairs/img_5245.jpg',       albumUrl: 'https://adobe.ly/4hhtgAd', downloadUrl: '' },
+                    ],
+                },
             ],
         },
         {
@@ -49,10 +64,31 @@ const CONFIG = {
             name: 'Groupe Photo',
             locked: false,
             heroImage: 'assets/images/Grouope photo 1.JPG',
-            bannerImage: 'assets/images/Groupe photo2o.JPG',
-            people: [],
-            photos: [],
-            albumUrl: 'https://adobe.ly/3Ti973Q',
+            subcategories: [
+                {
+                    id: 'groupe-photo',
+                    name: 'Group Photos',
+                    heroImage: 'assets/images/Grouope photo 1.JPG',
+                    photos: [],
+                    albumUrl: 'https://adobe.ly/3Ti973Q',
+                },
+                {
+                    id: 'green-gate',
+                    name: 'The Green Gate',
+                    heroImage: 'assets/gallery/green-gate/_mg_5461.jpg',
+                    photos: [],
+                    albumUrl: 'https://adobe.ly/4xJwpxD',
+                    isNew: true,
+                },
+                {
+                    id: 'pool-group',
+                    name: 'Poolside',
+                    heroImage: 'assets/gallery/pool-group/_mg_5370.jpg',
+                    photos: [],
+                    albumUrl: 'https://adobe.ly/4e3gnaP',
+                    isNew: true,
+                },
+            ],
         },
         {
             id: 'exposed',
@@ -74,10 +110,11 @@ const CONFIG = {
         {
             id: 'the-pool',
             name: 'The Pool',
-            locked: true,
-            teaser: 'Coming soon',
+            locked: false,
             heroImage: 'assets/images/The pool.JPG',
-            people: [],
+            albumUrl: 'https://adobe.ly/46NJLhu',
+            photos: [],
+            isNew: true,
         },
     ],
     jpeg: {
@@ -103,9 +140,17 @@ function getInitials(name) {
 function findCategory(id) {
     return CONFIG.categories.find(c => c.id === id);
 }
-function findPerson(categoryId, personId) {
+function findSubcategory(categoryId, subcategoryId) {
     const cat = findCategory(categoryId);
-    return cat ? cat.people.find(p => p.id === personId) : null;
+    return cat && cat.subcategories ? cat.subcategories.find(s => s.id === subcategoryId) : null;
+}
+function findPerson(categoryId, personId, subcategoryId) {
+    if (subcategoryId) {
+        const sub = findSubcategory(categoryId, subcategoryId);
+        return sub ? sub.people.find(p => p.id === personId) : null;
+    }
+    const cat = findCategory(categoryId);
+    return cat && cat.people ? cat.people.find(p => p.id === personId) : null;
 }
 
 function heroThumb(src) {
@@ -129,7 +174,17 @@ function parseRoute() {
     const parts = hash.split('/').filter(Boolean);
     if (parts.length === 0) return { view: 'landing' };
     if (parts.length === 1) return { view: 'category', categoryId: parts[0] };
-    if (parts.length === 2) return { view: 'person', categoryId: parts[0], personId: parts[1] };
+    if (parts.length === 2) {
+        const cat = findCategory(parts[0]);
+        if (cat && cat.subcategories) {
+            const sub = cat.subcategories.find(s => s.id === parts[1]);
+            if (sub) return { view: 'subcategory', categoryId: parts[0], subcategoryId: parts[1] };
+        }
+        return { view: 'person', categoryId: parts[0], personId: parts[1] };
+    }
+    if (parts.length === 3) {
+        return { view: 'person', categoryId: parts[0], subcategoryId: parts[1], personId: parts[2] };
+    }
     return { view: 'landing' };
 }
 
@@ -182,47 +237,74 @@ function renderLanding() {
 
     CONFIG.categories.forEach((cat, i) => {
         const card = document.createElement('div');
-        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '') + (cat.unlockStyle === 'revealed' ? ' category-card--revealed' : '');
+        card.className = 'category-card' + (cat.locked ? ' category-card--locked' : '');
         card.style.animationDelay = `${i * 0.1}s`;
-
-        const thumbHero = cat.heroImage ? heroThumb(cat.heroImage) : '';
-        const bgStyle = cat.heroImage
-            ? `background-image:url('${thumbHero}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
-            : '';
 
         const lockIcon = cat.locked
             ? '<div class="category-card__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>'
-            : cat.unlockStyle === 'revealed'
-            ? '<div class="category-card__revealed-lock"><svg viewBox="0 0 48 56" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="24" width="32" height="22" rx="3"/><path d="M14 24V16a10 10 0 0120 0v3" stroke-linecap="round"/><circle cx="24" cy="34" r="2.5" fill="currentColor" stroke="none"/><path d="M24 36.5v3" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="4" cy="32" rx="3" ry="5" opacity="0.35" transform="rotate(-10 4 32)"/><ellipse cx="2" cy="41" rx="2.5" ry="4" opacity="0.2" transform="rotate(8 2 41)"/><ellipse cx="5" cy="49" rx="2" ry="3.5" opacity="0.12"/><ellipse cx="44" cy="32" rx="3" ry="5" opacity="0.35" transform="rotate(10 44 32)"/><ellipse cx="46" cy="41" rx="2.5" ry="4" opacity="0.2" transform="rotate(-8 46 41)"/><ellipse cx="43" cy="49" rx="2" ry="3.5" opacity="0.12"/></svg></div>'
             : '';
-        const countText = cat.locked ? cat.teaser : (cat.photos && cat.photos.length ? cat.photos.length + ' photos' : cat.people.length + ' people');
+
+        let countText;
+        if (cat.locked) {
+            countText = cat.teaser;
+        } else if (cat.subcategories) {
+            countText = cat.subcategories.length + ' collections';
+        } else if (cat.photos !== undefined) {
+            countText = cat.photos.length + ' photos';
+        } else {
+            countText = (cat.people || []).length + ' people';
+        }
+
+        const hasNew = cat.isNew || (cat.subcategories && cat.subcategories.some(s => s.isNew));
+        const newBadge = hasNew ? '<div class="category-card__new">NEW</div>' : '';
+
+        let bgHtml;
+        if (cat.subcategories && !cat.locked) {
+            const slices = cat.subcategories.map(sub => {
+                const thumb = sub.heroImage ? heroThumb(sub.heroImage) : '';
+                return `<div class="category-card__slice" style="background-image:url('${thumb}');background-size:cover;background-position:center;"></div>`;
+            }).join('');
+            bgHtml = `<div class="category-card__bg category-card__bg--split">${slices}</div>`;
+        } else {
+            const thumbHero = cat.heroImage ? heroThumb(cat.heroImage) : '';
+            const bgStyle = cat.heroImage
+                ? `background-image:url('${thumbHero}');background-size:cover;background-position:center;${cat.locked ? 'filter:blur(3px) brightness(0.4);' : ''}`
+                : '';
+            bgHtml = `<div class="category-card__bg" style="${bgStyle}"></div>`;
+        }
 
         card.innerHTML = `
-            <div class="category-card__bg" style="${bgStyle}"></div>
+            ${bgHtml}
             <div class="category-card__overlay"></div>
             ${lockIcon}
+            ${newBadge}
             <div class="category-card__info">
                 <div class="category-card__name">${cat.name}</div>
                 <div class="category-card__count">${countText}</div>
             </div>
         `;
 
-        if (cat.heroImage && thumbHero !== cat.heroImage) {
-            const bg = card.querySelector('.category-card__bg');
-            const full = new Image();
-            full.onload = () => { bg.style.backgroundImage = `url('${cat.heroImage}')`; };
-            full.src = cat.heroImage;
+        if (cat.subcategories && !cat.locked) {
+            cat.subcategories.forEach((sub, si) => {
+                if (!sub.heroImage) return;
+                const slice = card.querySelectorAll('.category-card__slice')[si];
+                if (!slice) return;
+                const full = new Image();
+                full.onload = () => { slice.style.backgroundImage = `url('${sub.heroImage}')`; };
+                full.src = sub.heroImage;
+            });
+        } else if (cat.heroImage) {
+            const thumbHero = heroThumb(cat.heroImage);
+            if (thumbHero !== cat.heroImage) {
+                const bg = card.querySelector('.category-card__bg');
+                const full = new Image();
+                full.onload = () => { bg.style.backgroundImage = `url('${cat.heroImage}')`; };
+                full.src = cat.heroImage;
+            }
         }
 
         if (!cat.locked) {
-            card.addEventListener('click', () => {
-                if (cat.unlockStyle === 'revealed') {
-                    card.classList.add('category-card--popping');
-                    setTimeout(() => navigate(`#${cat.id}`), 600);
-                } else {
-                    navigate(`#${cat.id}`);
-                }
-            });
+            card.addEventListener('click', () => navigate(`#${cat.id}`));
         } else {
             const msg = document.createElement('div');
             msg.className = 'category-card__message';
@@ -277,7 +359,14 @@ function renderCategory(categoryId) {
 
     $('#category-eyebrow').textContent = CONFIG.shoot.subtitle;
     $('#category-title').textContent = cat.name;
-    $('#category-count').textContent = cat.photos && cat.photos.length && !cat.people.length ? `${cat.photos.length} photos` : `${cat.people.length} people`;
+
+    if (cat.subcategories) {
+        $('#category-count').textContent = cat.subcategories.length + ' collections';
+    } else if (cat.photos && cat.photos.length && !(cat.people || []).length) {
+        $('#category-count').textContent = `${cat.photos.length} photos`;
+    } else {
+        $('#category-count').textContent = `${(cat.people || []).length} people`;
+    }
 
     if (CONFIG.heroImages[categoryId] || cat.heroImage) {
         const src = CONFIG.heroImages[categoryId] || cat.heroImage;
@@ -291,7 +380,50 @@ function renderCategory(categoryId) {
     }
 
     const actionsBar = $('#category-actions');
-    if (cat.photos !== undefined && !cat.people.length && cat.albumUrl) {
+
+    const grid = $('#people-container');
+    grid.innerHTML = '';
+
+    if (cat.subcategories) {
+        actionsBar.style.display = 'none';
+        grid.className = 'categories-grid';
+
+        cat.subcategories.forEach((sub, i) => {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.style.animationDelay = `${i * 0.1}s`;
+
+            const thumbHero = sub.heroImage ? heroThumb(sub.heroImage) : '';
+            const bgStyle = sub.heroImage
+                ? `background-image:url('${thumbHero}');background-size:cover;background-position:center;`
+                : '';
+            const countText = sub.photos !== undefined ? (sub.photos.length || 0) + ' photos' : sub.people.length + ' people';
+            const subNewBadge = sub.isNew ? '<div class="category-card__new">NEW</div>' : '';
+
+            card.innerHTML = `
+                <div class="category-card__bg" style="${bgStyle}"></div>
+                <div class="category-card__overlay"></div>
+                ${subNewBadge}
+                <div class="category-card__info">
+                    <div class="category-card__name">${sub.name}</div>
+                    <div class="category-card__count">${countText}</div>
+                </div>
+            `;
+
+            if (sub.heroImage && thumbHero !== sub.heroImage) {
+                const bg = card.querySelector('.category-card__bg');
+                const full = new Image();
+                full.onload = () => { bg.style.backgroundImage = `url('${sub.heroImage}')`; };
+                full.src = sub.heroImage;
+            }
+
+            card.addEventListener('click', () => navigate(`#${categoryId}/${sub.id}`));
+            grid.appendChild(card);
+        });
+        return;
+    }
+
+    if (cat.photos !== undefined && !(cat.people || []).length && cat.albumUrl) {
         actionsBar.style.display = '';
         $('#cat-btn-download').href = cat.downloadUrl || cat.albumUrl;
         $('#cat-btn-lightroom').href = cat.albumUrl;
@@ -299,10 +431,9 @@ function renderCategory(categoryId) {
         actionsBar.style.display = 'none';
     }
 
-    const grid = $('#people-container');
-    grid.innerHTML = '';
+    grid.className = 'person-grid';
 
-    cat.people.forEach((person, i) => {
+    (cat.people || []).forEach((person, i) => {
         const card = document.createElement('div');
         card.className = 'person-card';
         card.style.animationDelay = `${i * 0.06}s`;
@@ -330,7 +461,7 @@ function renderCategory(categoryId) {
         grid.appendChild(card);
     });
 
-    if (cat.photos && cat.photos.length && !cat.people.length) {
+    if (cat.photos && cat.photos.length && !(cat.people || []).length) {
         grid.className = 'photo-grid';
         const directions = ['from-left', 'from-right', 'from-top', 'from-bottom'];
         cat.photos.forEach((photo, i) => {
@@ -359,6 +490,102 @@ function renderCategory(categoryId) {
             grid.appendChild(card);
         });
     }
+}
+
+function renderSubcategory(categoryId, subcategoryId) {
+    const cat = findCategory(categoryId);
+    if (!cat || !cat.subcategories) { navigate(`#${categoryId}`); return; }
+    const sub = cat.subcategories.find(s => s.id === subcategoryId);
+    if (!sub) { navigate(`#${categoryId}`); return; }
+
+    $('#category-eyebrow').textContent = cat.name;
+    $('#category-title').textContent = sub.name;
+    $('#category-count').textContent = sub.photos !== undefined ? `${sub.photos.length} photos` : `${(sub.people || []).length} people`;
+
+    const src = sub.heroImage;
+    const existing = $('#category-hero .hero__bg-img');
+    if (existing) existing.remove();
+    if (src) {
+        const img = document.createElement('img');
+        img.alt = sub.name;
+        img.className = 'hero__bg-img';
+        progressiveLoad(img, heroThumb(src), src);
+        $('#category-hero').insertBefore(img, $('#category-hero').firstChild);
+    }
+
+    const actionsBar = $('#category-actions');
+    const grid = $('#people-container');
+    grid.innerHTML = '';
+
+    if (sub.photos !== undefined && (!sub.people || !sub.people.length)) {
+        if (sub.albumUrl) {
+            actionsBar.style.display = '';
+            $('#cat-btn-download').href = sub.downloadUrl || sub.albumUrl;
+            $('#cat-btn-lightroom').href = sub.albumUrl;
+        } else {
+            actionsBar.style.display = 'none';
+        }
+
+        grid.className = 'photo-grid';
+        const directions = ['from-left', 'from-right', 'from-top', 'from-bottom'];
+        sub.photos.forEach((photo, i) => {
+            const card = document.createElement('div');
+            const dir = directions[i % directions.length];
+            card.className = `photo-card photo-card--slide photo-card--${dir}`;
+            card.style.animationDelay = `${0.15 + i * 0.12}s`;
+            const thumbSrc = photo.thumb || photo.file || photo;
+            const fullSrc = photo.file || photo;
+            const eager = i < 10;
+            card.innerHTML = `
+                <div class="photo-card__inner">
+                    <img alt="${sub.name} photo ${i + 1}" ${eager ? '' : 'loading="lazy"'} style="width:100%;height:100%;object-fit:cover;">
+                </div>
+                <div class="photo-card__hover">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </div>
+            `;
+            const img = card.querySelector('img');
+            if (eager) {
+                progressiveLoad(img, thumbSrc, fullSrc);
+            } else {
+                img.src = fullSrc;
+            }
+            card.addEventListener('click', () => openLightbox(i, sub.photos.length));
+            grid.appendChild(card);
+        });
+        return;
+    }
+
+    actionsBar.style.display = 'none';
+    grid.className = 'person-grid';
+
+    (sub.people || []).forEach((person, i) => {
+        const card = document.createElement('div');
+        card.className = 'person-card';
+        card.style.animationDelay = `${i * 0.06}s`;
+        card.dataset.personId = person.id;
+
+        const hasImage = person.heroImage && person.heroImage.length > 0;
+        const imageContent = hasImage
+            ? `<img alt="${person.name}">`
+            : `<span class="person-card__initials">${getInitials(person.name)}</span>`;
+
+        card.innerHTML = `
+            <div class="person-card__image">${imageContent}</div>
+            <div class="person-card__overlay"></div>
+            <div class="person-card__info">
+                <div class="person-card__name">${person.name}</div>
+            </div>
+        `;
+
+        if (hasImage) {
+            const img = card.querySelector('img');
+            progressiveLoad(img, heroThumb(person.heroImage), person.heroImage);
+        }
+
+        card.addEventListener('click', () => navigate(`#${categoryId}/${subcategoryId}/${person.id}`));
+        grid.appendChild(card);
+    });
 }
 
 function renderJpeg() {
@@ -401,9 +628,10 @@ function renderJpeg() {
     grid.appendChild(linkWrap);
 }
 
-function renderPerson(categoryId, personId) {
-    const person = findPerson(categoryId, personId);
-    if (!person) { navigate(`#${categoryId}`); return; }
+function renderPerson(categoryId, personId, subcategoryId) {
+    const person = findPerson(categoryId, personId, subcategoryId);
+    const backHash = subcategoryId ? `#${categoryId}/${subcategoryId}` : `#${categoryId}`;
+    if (!person) { navigate(backHash); return; }
 
     $('#person-name').textContent = person.name;
     const photos = person.photos || [];
@@ -469,14 +697,27 @@ function updateBreadcrumb(route) {
     if (!cat) return;
 
     bc.innerHTML += `<span class="breadcrumb__sep">/</span>`;
+
     if (route.view === 'category') {
         bc.innerHTML += `<span class="breadcrumb__item current">${cat.name}</span>`;
     } else {
         bc.innerHTML += `<a href="#${cat.id}" class="breadcrumb__item">${cat.name}</a>`;
     }
 
+    if (route.view === 'subcategory' || (route.view === 'person' && route.subcategoryId)) {
+        const sub = findSubcategory(route.categoryId, route.subcategoryId);
+        if (sub) {
+            bc.innerHTML += `<span class="breadcrumb__sep">/</span>`;
+            if (route.view === 'subcategory') {
+                bc.innerHTML += `<span class="breadcrumb__item current">${sub.name}</span>`;
+            } else {
+                bc.innerHTML += `<a href="#${route.categoryId}/${sub.id}" class="breadcrumb__item">${sub.name}</a>`;
+            }
+        }
+    }
+
     if (route.view === 'person') {
-        const person = findPerson(route.categoryId, route.personId);
+        const person = findPerson(route.categoryId, route.personId, route.subcategoryId);
         if (person) {
             bc.innerHTML += `<span class="breadcrumb__sep">/</span>`;
             bc.innerHTML += `<span class="breadcrumb__item current">${person.name}</span>`;
@@ -521,9 +762,14 @@ function openLightbox(index, total) {
     lightboxIndex = index;
     lightboxTotal = total;
     const route = parseRoute();
-    const person = findPerson(route.categoryId, route.personId);
-    if (person) {
-        lightboxPhotos = person.photos || [];
+    if (route.view === 'person') {
+        const person = findPerson(route.categoryId, route.personId, route.subcategoryId);
+        if (person) {
+            lightboxPhotos = person.photos || [];
+        }
+    } else if (route.view === 'subcategory') {
+        const sub = findSubcategory(route.categoryId, route.subcategoryId);
+        lightboxPhotos = (sub && sub.photos) ? sub.photos : [];
     } else {
         const cat = findCategory(route.categoryId);
         lightboxPhotos = (cat && cat.photos) ? cat.photos : [];
@@ -610,7 +856,10 @@ function handleRoute() {
                 renderCategory(route.categoryId); switchView('category');
             }
             break;
-        case 'person':    renderPerson(route.categoryId, route.personId); switchView('person'); break;
+        case 'subcategory':
+            renderSubcategory(route.categoryId, route.subcategoryId); switchView('category');
+            break;
+        case 'person':    renderPerson(route.categoryId, route.personId, route.subcategoryId); switchView('person'); break;
     }
 }
 
@@ -786,24 +1035,49 @@ function loadGallery() {
                     return;
                 }
                 const directCat = findCategory(album.slug);
-                if (directCat && directCat.photos !== undefined && !directCat.people.length) {
+                if (directCat && directCat.photos !== undefined && !(directCat.people || []).length && !directCat.subcategories) {
                     directCat.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
                     return;
                 }
-                const cat = findCategory('portraits');
-                if (!cat) return;
-                const person = cat.people.find(p => p.id === album.slug);
-                if (person) {
-                    person.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
+                let found = false;
+                for (const cat of CONFIG.categories) {
+                    if (cat.subcategories) {
+                        for (const sub of cat.subcategories) {
+                            if (sub.id === album.slug && sub.photos !== undefined) {
+                                sub.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
+                                found = true;
+                                break;
+                            }
+                            if (sub.people) {
+                                const person = sub.people.find(p => p.id === album.slug);
+                                if (person) {
+                                    person.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (found) break;
+                    }
+                    if (cat.people) {
+                        const person = cat.people.find(p => p.id === album.slug);
+                        if (person) {
+                            person.photos = album.photos.map(p => ({file: p.file, thumb: p.thumb || p.file}));
+                            found = true;
+                        }
+                    }
+                    if (found) break;
                 }
             });
             const route = parseRoute();
             if (route.view === 'landing') {
                 renderLanding();
             } else if (route.view === 'person') {
-                renderPerson(route.categoryId, route.personId);
+                renderPerson(route.categoryId, route.personId, route.subcategoryId);
             } else if (route.categoryId === 'jpeg') {
                 renderJpeg();
+            } else if (route.view === 'subcategory') {
+                renderSubcategory(route.categoryId, route.subcategoryId);
             } else if (route.view === 'category') {
                 renderCategory(route.categoryId);
             }
@@ -812,6 +1086,51 @@ function loadGallery() {
 }
 
 // ── Init ──
+
+function initNotifications() {
+    const newAlbums = [];
+    CONFIG.categories.forEach(cat => {
+        if (cat.isNew && !cat.subcategories) {
+            newAlbums.push({ name: cat.name, route: `#${cat.id}`, parentName: '' });
+        }
+        if (cat.subcategories) {
+            cat.subcategories.forEach(sub => {
+                if (sub.isNew) newAlbums.push({ name: sub.name, route: `#${cat.id}/${sub.id}`, parentName: cat.name });
+            });
+        }
+    });
+    if (!newAlbums.length) return;
+
+    const notif = $('#nav-notif');
+    const badge = $('#notif-badge');
+    const dropdown = $('#notif-dropdown');
+    const list = $('#notif-list');
+
+    notif.style.display = '';
+    badge.textContent = newAlbums.length;
+
+    list.innerHTML = newAlbums.map(a => `
+        <a class="nav-notif__item" href="${a.route}">
+            <span class="nav-notif__item-name">${a.name}</span>
+            ${a.parentName ? `<span class="nav-notif__item-parent">${a.parentName}</span>` : ''}
+        </a>
+    `).join('');
+
+    list.querySelectorAll('.nav-notif__item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            dropdown.classList.remove('open');
+            navigate(item.getAttribute('href'));
+        });
+    });
+
+    notif.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+}
 
 function init() {
     $('#footer-year').textContent = new Date().getFullYear();
@@ -824,6 +1143,7 @@ function init() {
     initCursor();
 
     renderLanding();
+    initNotifications();
     initNavScroll();
     initRevealObserver();
     loadGallery();
